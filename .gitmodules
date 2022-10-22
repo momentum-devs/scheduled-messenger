@@ -1,3 +1,13 @@
-[submodule "externals/mailio"]
-	path = externals/mailio
-	url = git@github.com:karastojko/mailio.git
+
+[submodule "externals/fmt"]
+	path = externals/fmt
+	url = https://github.com/fmtlib/fmt.git
+[submodule "externals/taopq"]
+	path = externals/taopq
+	url = https://github.com/taocpp/taopq.git
+[submodule "externals/googletest"]
+	path = externals/googletest
+	url = https://github.com/google/googletest.git
+[submodule "externals/cpr"]
+	path = externals/cpr
+	url = https://github.com/libcpr/cpr.git
