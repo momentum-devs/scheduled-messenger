@@ -1,14 +1,25 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
-import * as cdk from 'aws-cdk-lib';
-import { DatabaseStack } from './stacks/databaseStack';
+import * as core from 'aws-cdk-lib';
+import { RdsStack } from './stacks/rds/rdsStack';
 import { VpcStack } from './stacks/vpc/vpcStack';
+import { MessengerStack } from './stacks/messenger/messengerStack';
 
-const app = new cdk.App();
+const awsRegion = process.env['AWS_REGION'] || process.env['AWS_DEFAULT_REGION'];
+const awsAccount = process.env['AWS_ACCOUNT_ID'];
 
-const region = 'us-east-1';
-const account = '484767037608';
+console.log({ awsRegion, awsAccount });
 
-const vpcStack = new VpcStack(app, 'VpcStack', {env: {account,region}});
+if (!awsRegion || !awsAccount) {
+  throw new Error('Missing environment variables');
+}
 
-new DatabaseStack(app, 'DatabaseStack', {env: {account,region}, vpc: vpcStack.vpc});
+const app = new core.App();
+
+const env = { account: awsAccount, region: awsRegion };
+
+const vpcStack = new VpcStack(app, 'VpcStack', { env });
+
+const rdsStack = new RdsStack(app, 'RdsStack', { env, vpc: vpcStack.vpc });
+
+new MessengerStack(app, 'MessengerStack', { env, databaseCredentialsSecret: rdsStack.databaseCredentialsSecret });

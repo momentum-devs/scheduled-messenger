@@ -2,7 +2,7 @@
   "name": "infrastructure",
   "version": "0.1.0",
   "bin": {
-    "infrastructure": "bin/infrastructure.js"
+    "app": "app.js"
   },
   "scripts": {
     "build": "tsc",
