@@ -31,7 +31,12 @@
 *.out
 *.app
 
-build
+
+**/cmake-build-debug
+**/build
+**/CMakeFiles
+**/.idea
+**/dist
 .vscode
 cmake-build-debug
 .idea
