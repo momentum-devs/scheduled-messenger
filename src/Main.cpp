@@ -19,5 +19,6 @@ invocation_response my_handler(invocation_request const& request)
 int main()
 {
     run_handler(my_handler);
+    
     return 0;
 }

@@ -17,11 +17,7 @@ export class RdsStack extends core.Stack {
 
     const databaseConnectionSecurityGroup = new ec2.SecurityGroup(this, 'databaseConnectionSecurityGroup', { vpc });
 
-    databaseConnectionSecurityGroup.addIngressRule(
-      databaseConnectionSecurityGroup,
-      ec2.Port.tcp(5432),
-      'Allow db connection',
-    );
+    databaseConnectionSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(5432), 'Allow db connection');
 
     const databaseUsername = 'databaseUsername';
 
