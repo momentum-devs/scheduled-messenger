@@ -1,8 +1,9 @@
 #include "MailioClient.h"
-#include "exceptions/MailioClientError.h"
 
 #include <mailio/message.hpp>
 #include <mailio/smtp.hpp>
+
+#include "exceptions/MailioClientError.h"
 
 const int MailioClient::smtpPort = 587;
 const std::string MailioClient::smtpAddress = "smtp.gmail.com";
@@ -19,11 +20,12 @@ void MailioClient::sendEmail(const SendEmailPayload& payload) const
         message.content(payload.message);
 
         mailio::smtps connection(smtpAddress, smtpPort);
-        
-        connection.authenticate(payload.sender.address, payload.sender.password, mailio::smtps::auth_method_t::START_TLS);
+
+        connection.authenticate(payload.sender.address, payload.sender.password,
+                                mailio::smtps::auth_method_t::START_TLS);
         connection.submit(message);
     }
-    catch(const std::exception& e)
+    catch (const std::exception& e)
     {
         throw MailioClientError{e.what()};
     }

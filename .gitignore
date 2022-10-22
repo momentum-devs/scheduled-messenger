@@ -40,3 +40,4 @@
 .vscode
 cmake-build-debug
 .idea
+**/scheduled-messenger.zip

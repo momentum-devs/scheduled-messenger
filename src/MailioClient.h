@@ -1,8 +1,8 @@
 #pragma once
 
-#include "MailClient.h"
+#include "EmailClient.h"
 
-class MailioClient: public MailClient
+class MailioClient : public EmailClient
 {
 public:
     void sendEmail(const SendEmailPayload& payload) const override;
