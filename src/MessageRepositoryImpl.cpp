@@ -59,8 +59,9 @@ std::vector<Message> MessageRepositoryImpl::findMany() const
                             messageRow[recipientPhoneNumber].as<std::string>()};
 
         Message message{messageRow[messageId].as<std::string>(),
-                        messageRow[messagesType].as<std::string>(),
+                        messageRow[messagesContent].as<std::string>(),
                         messageRow[messageTitle].as<std::string>(),
+                        messageRow[messagesType].as<std::string>(),
                         messageRow[messageSendDate].as<std::string>(),
                         user,
                         recipient};

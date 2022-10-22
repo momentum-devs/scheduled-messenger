@@ -21,7 +21,7 @@ void SendMessagesCommandImpl::execute() const
 
         EmailReceiver emailReceiver{*message.recipient.emailAddress, *message.recipient.name};
 
-        SendEmailPayload emailPayload{emailSender, emailReceiver, *message.title, message.text};
+        SendEmailPayload emailPayload{emailSender, emailReceiver, *message.title, message.content};
 
         emailClient->sendEmail(emailPayload);
     }

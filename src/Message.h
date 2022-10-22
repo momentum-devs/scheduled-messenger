@@ -9,8 +9,9 @@
 struct Message
 {
     std::string id;
-    std::string text;
+    std::string content;
     std::optional<std::string> title;
+    std::string type;
     std::string sendDate;
     User user;
     Recipient recipient;
