@@ -25,24 +25,26 @@ std::vector<Message> MessageRepositoryImpl::findMany() const
     auto messages = std::vector<Message>();
     const auto connection = getConnection();
 
-    const auto findManyMessagesQuery = R"(SELECT
-                                            messages.id,
-                                            messages.title,
-                                            messages."content",
-                                            messages."type",
-                                            messages.send_date,
-                                            users."id" as "user.id",
-                                            users."name" as "user.name",
-                                            users."password",
-                                            users.email as "user.email",
-                                            users.phone as "user.phone",
-                                            recipients."id" as "recipient.id",
-                                            recipients."name" as "recipient.name",
-                                            recipients.email as "recipient.email",
-                                            recipients.phone as "recipient.phone"
-                                            FROM messages
-                                            JOIN users on (messages.user_id = users.id)
-                                            JOIN recipients ON (messages.recipient_id = recipients.id))";
+    const auto findManyMessagesQuery = R"(
+                                    SELECT
+                                        messages.id,
+                                        messages.title,
+                                        messages."content",
+                                        messages."type",
+                                        messages.send_date,
+                                        users."id" as "user.id",
+                                        users."name" as "user.name",
+                                        users."password",
+                                        users.email as "user.email",
+                                        users.phone as "user.phone",
+                                        recipients."id" as "recipient.id",
+                                        recipients."name" as "recipient.name",
+                                        recipients.email as "recipient.email",
+                                        recipients.phone as "recipient.phone"
+                                    FROM messages
+                                        JOIN users on (messages.user_id = users.id)
+                                        JOIN recipients ON (messages.recipient_id = recipients.id)
+                                    WHERE messages.send_date = now()::date;)";
 
     const auto messagesRows = connection->execute(findManyMessagesQuery);
 
