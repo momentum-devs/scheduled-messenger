@@ -37,3 +37,4 @@
 **/CMakeFiles
 **/.idea
 **/dist
+.vscode
