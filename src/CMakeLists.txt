@@ -1,7 +1,8 @@
 set(SOURCES
-        main.cpp
+        Main.cpp
         MailioClient.cpp
-        EmailClientMock.h)
+        MessageRepositoryImpl.cpp
+        )
 
 add_executable(scheduled-messenger ${SOURCES})
 
