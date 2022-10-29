@@ -1,12 +1,11 @@
 import * as core from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as secrets from 'aws-cdk-lib/aws-secretsmanager';
-import * as path from 'path';
 
-import { AppConfig } from '../../appConfig.js';
+import { AppConfig } from '../../config/appConfig.js';
+import { LambdaPathFactory } from '../../common/lambdaPathFactory.js';
+import { EnvKey } from '../../config/envKey.js';
 
 export interface MessengerStackProps extends core.StackProps {
-  readonly databaseCredentialsSecret: secrets.Secret;
   readonly appConfig: AppConfig;
 }
 
@@ -14,11 +13,23 @@ export class MessengerStack extends core.Stack {
   public constructor(scope: core.App, id: string, props: MessengerStackProps) {
     super(scope, id, props);
 
-    new lambda.Function(this, 'MyFunction', {
+    const lambdaPathFactory = new LambdaPathFactory('messenger');
+
+    const { appConfig } = props;
+
+    const lambdaEnvironment = {
+      [EnvKey.databaseName]: appConfig.databaseName,
+      [EnvKey.databaseHost]: appConfig.databaseHost,
+      [EnvKey.databaseUser]: appConfig.databaseUser,
+      [EnvKey.databasePassword]: appConfig.databasePassword,
+      [EnvKey.databasePort]: appConfig.databasePort,
+    };
+
+    new lambda.Function(this, 'sendEmailsLambda', {
       runtime: lambda.Runtime.PROVIDED,
-      handler: 'scheduled-messenger',
-      code: lambda.Code.fromAsset(path.join(__dirname, './scheduled-messenger.zip')),
-      environment: props.appConfig as unknown as Record<string, string>,
+      handler: 'send-emails-lambda-handler',
+      code: lambda.Code.fromAsset(lambdaPathFactory.create('sendEmailsLambda/sendEmailsLambdaHandler.zip')),
+      environment: lambdaEnvironment,
     });
   }
 }

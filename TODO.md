@@ -1,11 +1,8 @@
-# scheduled-messenger
-
 TODO:
 
-* Repeated messages - cron
-* One time messages (delete them from db)
-* Remove one time messages after sending
-* Http endpoint for adding messages to db
-* Http endpoint for fetching all the scheduled messages by user
-* Database migrations
-* Support for other SMTP hosts (outlook, yahoo, proton)
+- Repeated messages (repeated by day, week, month, year)
+- One time messages (delete them from db)
+- Http endpoint for adding messages to db
+- Http endpoint for fetching all the scheduled messages by email
+- Database migrations
+- Support for other SMTP hosts (outlook, yahoo, proton)

@@ -4,11 +4,14 @@ import { QueryBuilderFactoryImpl } from 'rest-api';
 
 import { MigrationSource } from './migrationSource.js';
 
-async function runDatabaseMigrations(): Promise<void> {
-  const databaseName = process.env['DB_NAME'] as string;
-  const host = process.env['DB_HOST'] as string;
-  const user = process.env['DB_USERNAME'] as string;
-  const password = process.env['DB_PASSWORD'] as string;
+import { Handler } from 'aws-lambda';
+import { EnvKey } from '../../../../config/envKey.js';
+
+export const lambda: Handler = async () => {
+  const databaseName = process.env[EnvKey.databaseName] as string;
+  const host = process.env[EnvKey.databaseHost] as string;
+  const user = process.env[EnvKey.databaseUser] as string;
+  const password = process.env[EnvKey.databasePassword] as string;
 
   const databaseQueryBuilder = new QueryBuilderFactoryImpl().create({ databaseName, host, password, user });
 
@@ -19,6 +22,4 @@ async function runDatabaseMigrations(): Promise<void> {
   });
 
   console.log('Database migrations executed.');
-}
-
-export const handler = runDatabaseMigrations;
+};

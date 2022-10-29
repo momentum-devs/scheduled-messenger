@@ -1,1 +1,1 @@
-export * from './postgres/queryBuilderFactoryImpl.js';
+export * from './common/postgres/queryBuilderFactoryImpl.js';

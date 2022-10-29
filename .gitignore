@@ -39,7 +39,7 @@
 .vscode
 cmake-build-debug
 .idea
-**/scheduled-messenger.zip
+**/sendEmailsLambdaHandler.zip
 
 
 .idea
