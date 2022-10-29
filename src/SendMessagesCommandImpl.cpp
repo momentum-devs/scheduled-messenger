@@ -17,11 +17,13 @@ void SendMessagesCommandImpl::execute() const
     {
         validateEmailMessage(message);
 
-        EmailSender emailSender{*message.user.emailAddress, *message.user.name, *message.user.emailPassword};
+        // TODO: add date&&time validation
 
-        EmailReceiver emailReceiver{*message.recipient.emailAddress, *message.recipient.name};
+        EmailSender emailSender{message.user.emailAddress, message.user.name, message.user.emailPassword};
 
-        SendEmailPayload emailPayload{emailSender, emailReceiver, *message.title, message.text};
+        EmailReceiver emailReceiver{message.recipient.emailAddress, message.recipient.name};
+
+        SendEmailPayload emailPayload{emailSender, emailReceiver, message.title, message.text};
 
         emailClient->sendEmail(emailPayload);
     }
@@ -29,11 +31,7 @@ void SendMessagesCommandImpl::execute() const
 
 void SendMessagesCommandImpl::validateEmailMessage(const Message& message) const
 {
-    const auto userIsValid = message.user.emailAddress && message.user.name && message.user.emailPassword;
-
-    const auto recipientIsValid = message.recipient.name && message.recipient.emailAddress;
-
-    const auto messageIsValid = message.title && userIsValid && recipientIsValid;
+    const auto messageIsValid = true; // TODO:implement
 
     if (!messageIsValid)
     {

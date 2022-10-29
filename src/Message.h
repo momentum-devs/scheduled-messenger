@@ -1,6 +1,5 @@
 #pragma once
 
-#include <optional>
 #include <string>
 
 #include "Recipient.h"
@@ -10,8 +9,9 @@ struct Message
 {
     std::string id;
     std::string text;
-    std::optional<std::string> title;
+    std::string title;
     std::string sendDate;
+    std::string repeatBy;
     User user;
     Recipient recipient;
 };
