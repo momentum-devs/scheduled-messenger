@@ -31,7 +31,6 @@
 *.out
 *.app
 
-
 **/cmake-build-debug
 **/build
 **/CMakeFiles
@@ -41,3 +40,27 @@
 cmake-build-debug
 .idea
 **/scheduled-messenger.zip
+
+
+.idea
+node_modules
+.env
+dist
+*.log
+.storage
+.verdaccio
+.config
+.history
+
+.esbuild
+coverage
+.eslintcache
+
+.DS_Store
+
+.vscode
+!.vscode/extensions.json
+
+.cdk.staging
+cdk.out
+cdk.context.json
