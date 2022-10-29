@@ -15,8 +15,6 @@ void SendMessagesCommandImpl::execute() const
     // TODO: send async
     for (const auto& message : messages)
     {
-        validateEmailMessage(message);
-
         // TODO: add date&&time validation
 
         EmailSender emailSender{message.user.emailAddress, message.user.name, message.user.emailPassword};
@@ -26,15 +24,5 @@ void SendMessagesCommandImpl::execute() const
         SendEmailPayload emailPayload{emailSender, emailReceiver, message.title, message.text};
 
         emailClient->sendEmail(emailPayload);
-    }
-}
-
-void SendMessagesCommandImpl::validateEmailMessage(const Message& message) const
-{
-    const auto messageIsValid = true; // TODO:implement
-
-    if (!messageIsValid)
-    {
-        throw EmailRequiredFieldsNotProvidedError{"Email required fields not provided."};
     }
 }

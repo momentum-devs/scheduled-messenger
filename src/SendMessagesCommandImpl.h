@@ -14,8 +14,6 @@ public:
     void execute() const override;
 
 private:
-    void validateEmailMessage(const Message&) const;
-
     std::unique_ptr<EmailClient> emailClient;
     std::unique_ptr<MessageRepository> messageRepository;
 };

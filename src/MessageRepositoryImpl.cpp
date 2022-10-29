@@ -18,10 +18,15 @@ std::string recipientEmail = "recipient.email";
 std::string recipientName = "recipient.name";
 }
 
-std::vector<Message> MessageRepositoryImpl::findMany() const
+MessageRepositoryImpl::MessageRepositoryImpl(std::unique_ptr<DatabaseConnector> databaseConnectorInit)
+    : databaseConnector(std::move(databaseConnectorInit))
+{
+}
+
+std::vector<Message> MessageRepositoryImpl::findMany()
 {
     auto messages = std::vector<Message>();
-    const auto connection = getConnection();
+    const auto connection = databaseConnector->getConnection();
 
     const auto findManyMessagesQuery = R"(
                                     SELECT
@@ -64,19 +69,4 @@ std::vector<Message> MessageRepositoryImpl::findMany() const
     }
 
     return messages;
-}
-
-std::shared_ptr<tao::pq::connection> MessageRepositoryImpl::getConnection() const
-{
-    const std::string username = std::getenv("DB_USERNAME");
-    const std::string password = std::getenv("DB_PASSWORD");
-    const std::string host = std::getenv("DB_HOST");
-    const std::string port = std::getenv("DB_PORT");
-    const std::string databaseName = std::getenv("DB_NAME");
-
-    const auto uri = fmt::format("postgresql://{}:{}@{}:{}/{}", username, password, host, port, databaseName);
-
-    auto connection = tao::pq::connection::create(uri);
-
-    return connection;
 }

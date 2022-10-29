@@ -3,7 +3,7 @@ set(SOURCES
         MailioClient.cpp
         MessageRepositoryImpl.cpp
         SendMessagesCommandImpl.cpp
-        )
+        DatabaseConnector.cpp)
 
 add_executable(scheduled-messenger ${SOURCES})
 
