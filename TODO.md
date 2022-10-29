@@ -2,14 +2,10 @@
 
 TODO:
 
-* SMS
 * Repeated messages - cron
 * One time messages (delete them from db)
+* Remove one time messages
 * Http endpoint for adding messages to db
-* Http endpoint for user login
-* Http endpoint for fetching all the scheduled messages
-* Facebook Messenger integration
+* Http endpoint for fetching all the scheduled messages by user
 * Database migrations
-* Facebook messenger bot as a client?
-* Support for other SMTP hosts
-
+* Support for other SMTP hosts (outlook, yahoo, proton)
