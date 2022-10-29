@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-named-as-default
 import knex from 'knex';
 import { QueryBuilder } from './queryBuilder.js';
 import { QueryBuilderConfig } from './queryBuilderConfig.js';
