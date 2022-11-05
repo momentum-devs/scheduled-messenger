@@ -3,6 +3,7 @@
 #include <string>
 
 #include "Recipient.h"
+#include "RepeatedBy.h"
 #include "User.h"
 
 struct Message
@@ -11,7 +12,7 @@ struct Message
     std::string text;
     std::string title;
     std::string sendDate;
-    std::string repeatBy;
+    RepeatedBy repeatBy;
     User user;
     Recipient recipient;
 };

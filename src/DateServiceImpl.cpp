@@ -1,12 +1,14 @@
-#include "DateService.h"
+#include "DateServiceImpl.h"
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/date_time.hpp>
 #include <sstream>
 
-DateService::DateService() {}
+#include "fmt/format.h"
 
-bool DateService::isDateWithinRecurringTimePeriod(IsDateWithinRecurringTimePeriodPayload payload)
+DateServiceImpl::DateServiceImpl() {}
+
+bool DateServiceImpl::isDateWithinRecurringTimePeriod(IsDateWithinRecurringTimePeriodPayload payload)
 {
     auto [year, month, day, hour, minute] = convertDateStringToTuple(payload.date);
     auto [startYear, startMonth, startDay, startHour, startMinute] = convertDateStringToTuple(payload.startDate);
@@ -42,13 +44,12 @@ bool DateService::isDateWithinRecurringTimePeriod(IsDateWithinRecurringTimePerio
     {
         boost::gregorian::date startDate{startYear, startMonth, startDay};
         boost::gregorian::date date{year, month, day};
-        std::cout << startDate.day_of_week() << "==" << date.day_of_week();
         return startDate.day_of_week() == date.day_of_week();
     }
     return false;
 }
 
-std::tuple<int, int, int, int, int> DateService::convertDateStringToTuple(std::string date)
+std::tuple<int, int, int, int, int> DateServiceImpl::convertDateStringToTuple(std::string date)
 {
     int year;
     int month;
@@ -62,7 +63,7 @@ std::tuple<int, int, int, int, int> DateService::convertDateStringToTuple(std::s
     return {abs(year), abs(month), abs(day), abs(hour), abs(minute)};
 }
 
-bool DateService::isTimeFromTimeWindow(std::tuple<int, int> time, std::tuple<int, int> startTime, int timeWindow)
+bool DateServiceImpl::isTimeFromTimeWindow(std::tuple<int, int> time, std::tuple<int, int> startTime, int timeWindow)
 {
     auto [hour, minute] = time;
     auto [startHour, startMinute] = startTime;
@@ -78,4 +79,10 @@ bool DateService::isTimeFromTimeWindow(std::tuple<int, int> time, std::tuple<int
     }
 
     return false;
+}
+std::string DateServiceImpl::getCurrentDate()
+{
+    boost::posix_time::ptime timeLocal = boost::posix_time::second_clock::local_time();
+    return fmt::format("{}-{}-{} {}:{}", timeLocal.date().year(), timeLocal.date().month(), timeLocal.date().day(),
+                       timeLocal.time_of_day().hours(), timeLocal.time_of_day().minutes());
 }

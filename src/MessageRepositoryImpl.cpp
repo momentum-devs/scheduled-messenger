@@ -18,8 +18,9 @@ std::string recipientEmail = "recipient.email";
 std::string recipientName = "recipient.name";
 }
 
-MessageRepositoryImpl::MessageRepositoryImpl(std::unique_ptr<DatabaseConnector> databaseConnectorInit)
-    : databaseConnector(std::move(databaseConnectorInit))
+MessageRepositoryImpl::MessageRepositoryImpl(std::unique_ptr<DatabaseConnector> databaseConnectorInit,
+                                             std::unique_ptr<RepeatedByMapper> repeatedByMapperInit)
+    : databaseConnector{std::move(databaseConnectorInit)}, repeatedByMapper{std::move(repeatedByMapperInit)}
 {
 }
 
@@ -61,7 +62,7 @@ std::vector<Message> MessageRepositoryImpl::findMany()
                         messageRow[messageContent].as<std::string>(),
                         messageRow[messageTitle].as<std::string>(),
                         messageRow[messageSendDate].as<std::string>(),
-                        messageRow[messageRepeatBy].as<std::string>(),
+                        repeatedByMapper->map(messageRow[messageRepeatBy].as<std::string>()),
                         user,
                         recipient};
 

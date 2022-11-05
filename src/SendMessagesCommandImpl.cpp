@@ -3,19 +3,26 @@
 #include "exceptions/EmailRequiredFieldsNotProvidedError.h"
 
 SendMessagesCommandImpl::SendMessagesCommandImpl(std::unique_ptr<EmailClient> emailClientInit,
-                                                 std::unique_ptr<MessageRepository> messageRepositoryInit)
-    : emailClient{std::move(emailClientInit)}, messageRepository{std::move(messageRepositoryInit)}
+                                                 std::unique_ptr<MessageRepository> messageRepositoryInit,
+                                                 std::unique_ptr<DateService> dateServiceInit)
+    : emailClient{std::move(emailClientInit)},
+      messageRepository{std::move(messageRepositoryInit)},
+      dateService{std::move(dateServiceInit)}
 {
 }
 
 void SendMessagesCommandImpl::execute() const
 {
+    const auto startDate = dateService->getCurrentDate();
     const auto messages = messageRepository->findMany();
 
     // TODO: send async
     for (const auto& message : messages)
     {
-        // TODO: add date&&time validation
+        if (!dateService->isDateWithinRecurringTimePeriod({message.sendDate, startDate, message.repeatBy, 5}))
+        {
+            continue;
+        }
 
         EmailSender emailSender{message.user.emailAddress, message.user.name, message.user.emailPassword};
 
@@ -25,8 +32,4 @@ void SendMessagesCommandImpl::execute() const
 
         emailClient->sendEmail(emailPayload);
     }
-}
-bool SendMessagesCommandImpl::verifyDate(std::string)
-{
-    return false;
 }

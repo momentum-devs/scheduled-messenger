@@ -1,4 +1,4 @@
-#include "DateService.h"
+#include "DateServiceImpl.h"
 
 #include "gtest/gtest.h"
 
@@ -7,7 +7,7 @@
 class DataServiceTest : public testing::Test
 {
 public:
-    DateService dateService;
+    DateServiceImpl dateService;
 };
 
 TEST_F(DataServiceTest, giveSameDatesAndSameTimeWithNoneRepeat_shouldReturnTrue)

@@ -2,8 +2,10 @@
 
 #include "DatabaseConfig.h"
 #include "DatabaseConnector.h"
+#include "DateServiceImpl.h"
 #include "MailioClient.h"
 #include "MessageRepositoryImpl.h"
+#include "RepeatedByMapperImpl.h"
 #include "SendMessagesCommandImpl.h"
 
 using namespace aws::lambda_runtime;
@@ -16,10 +18,13 @@ invocation_response my_handler(invocation_request const& request)
     };
     std::unique_ptr<DatabaseConnector> databaseConnector = std::make_unique<DatabaseConnector>(databaseConfig);
     std::unique_ptr<EmailClient> emailClient = std::make_unique<MailioClient>();
+    std::unique_ptr<RepeatedByMapper> repeatedByMapper = std::make_unique<RepeatedByMapperImpl>();
     std::unique_ptr<MessageRepository> messageRepository =
-        std::make_unique<MessageRepositoryImpl>(std::move(databaseConnector));
+        std::make_unique<MessageRepositoryImpl>(std::move(databaseConnector), std::move(repeatedByMapper));
+    std::unique_ptr<DateService> dateService = std::make_unique<DateServiceImpl>();
 
-    SendMessagesCommandImpl sendMessagesCommand{std::move(emailClient), std::move(messageRepository)};
+    SendMessagesCommandImpl sendMessagesCommand{std::move(emailClient), std::move(messageRepository),
+                                                std::move(dateService)};
 
     sendMessagesCommand.execute();
 

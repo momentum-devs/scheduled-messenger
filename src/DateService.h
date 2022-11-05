@@ -8,11 +8,8 @@
 class DateService
 {
 public:
-    DateService();
+    virtual ~DateService() = default;
 
-    bool isDateWithinRecurringTimePeriod(IsDateWithinRecurringTimePeriodPayload payload);
-
-private:
-    std::tuple<int, int, int, int, int> convertDateStringToTuple(std::string date);
-    bool isTimeFromTimeWindow(std::tuple<int, int> time, std::tuple<int, int> startTime, int timeWindow);
+    virtual bool isDateWithinRecurringTimePeriod(IsDateWithinRecurringTimePeriodPayload payload) = 0;
+    virtual std::string getCurrentDate() = 0;
 };

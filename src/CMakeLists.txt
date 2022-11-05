@@ -3,11 +3,12 @@ set(SOURCES
         MessageRepositoryImpl.cpp
         SendMessagesCommandImpl.cpp
         DatabaseConnector.cpp
-        DateService.cpp
+        DateServiceImpl.cpp
+        RepeatedByMapperImpl.cpp
         )
 
 set(UT_SOURCES
-        DateServiceTest.cpp
+        DateServiceImplTest.cpp
         )
 
 add_executable(scheduled-messenger Main.cpp ${SOURCES})
