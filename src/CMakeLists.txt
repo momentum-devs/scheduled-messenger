@@ -9,6 +9,9 @@ set(SOURCES
 
 set(UT_SOURCES
         DateServiceImplTest.cpp
+        SendMessagesCommandImplTest.cpp
+        EmailClientMock.h
+        MessageRepositoryMock.h
         )
 
 add_executable(scheduled-messenger Main.cpp ${SOURCES})

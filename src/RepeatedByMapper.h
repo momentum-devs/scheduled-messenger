@@ -10,5 +10,5 @@ class RepeatedByMapper
 public:
     virtual ~RepeatedByMapper() = default;
 
-    virtual RepeatedBy map(std::optional<std::string> repeatedByStr) const = 0;
+    virtual RepeatedBy map(const std::optional<std::string>& repeatedByStr) const = 0;
 };

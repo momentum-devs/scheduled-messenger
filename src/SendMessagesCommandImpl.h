@@ -19,4 +19,5 @@ private:
     std::unique_ptr<EmailClient> emailClient;
     std::unique_ptr<MessageRepository> messageRepository;
     std::unique_ptr<DateService> dateService;
+    int timeWindow;
 };

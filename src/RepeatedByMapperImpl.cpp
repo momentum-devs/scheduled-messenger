@@ -11,7 +11,7 @@ std::unordered_map<std::optional<std::string>, RepeatedBy> repeatedByMapping{
 };
 }
 
-RepeatedBy RepeatedByMapperImpl::map(std::optional<std::string> repeatedByStr) const
+RepeatedBy RepeatedByMapperImpl::map(const std::optional<std::string>& repeatedByStr) const
 {
     try
     {

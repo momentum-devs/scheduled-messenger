@@ -27,6 +27,7 @@ MessageRepositoryImpl::MessageRepositoryImpl(std::unique_ptr<DatabaseConnector> 
 std::vector<Message> MessageRepositoryImpl::findMany()
 {
     auto messages = std::vector<Message>();
+
     const auto connection = databaseConnector->getConnection();
 
     const auto findManyMessagesQuery = R"(
@@ -62,7 +63,7 @@ std::vector<Message> MessageRepositoryImpl::findMany()
                         messageRow[messageContent].as<std::string>(),
                         messageRow[messageTitle].as<std::string>(),
                         messageRow[messageSendDate].as<std::string>(),
-                        repeatedByMapper->map(messageRow[messageRepeatBy].as<std::string>()),
+                        repeatedByMapper->map(messageRow[messageRepeatBy].as<std::optional<std::string>>()),
                         messageRow[display_name].as<std::string>(),
                         user,
                         recipient};

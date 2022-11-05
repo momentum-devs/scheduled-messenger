@@ -1,16 +1,15 @@
 #pragma once
 
 #include "DateService.h"
+#include "DateTime.h"
 
 class DateServiceImpl : public DateService
 {
 public:
-    DateServiceImpl();
-
-    bool isDateWithinRecurringTimePeriod(IsDateWithinRecurringTimePeriodPayload payload) override;
-    std::string getCurrentDate() override;
+    bool isDateWithinRecurringTimePeriod(const IsDateWithinRecurringTimePeriodPayload& payload) const override;
+    std::string getCurrentDate() const override;
 
 private:
-    std::tuple<int, int, int, int, int> convertDateStringToTuple(std::string date);
-    bool isTimeFromTimeWindow(std::tuple<int, int> time, std::tuple<int, int> startTime, int timeWindow);
+    DateTime convertDateStringToDateTime(std::string date) const;
+    bool isTimeFromTimeWindow(const Time& time, const Time& startTime, int timeWindow) const;
 };

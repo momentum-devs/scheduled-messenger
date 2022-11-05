@@ -7,19 +7,21 @@ SendMessagesCommandImpl::SendMessagesCommandImpl(std::unique_ptr<EmailClient> em
                                                  std::unique_ptr<DateService> dateServiceInit)
     : emailClient{std::move(emailClientInit)},
       messageRepository{std::move(messageRepositoryInit)},
-      dateService{std::move(dateServiceInit)}
+      dateService{std::move(dateServiceInit)},
+      timeWindow{5}
 {
 }
 
 void SendMessagesCommandImpl::execute() const
 {
     const auto startDate = dateService->getCurrentDate();
+
     const auto messages = messageRepository->findMany();
 
     // TODO: send async
     for (const auto& message : messages)
     {
-        if (!dateService->isDateWithinRecurringTimePeriod({message.sendDate, startDate, message.repeatBy, 5}))
+        if (!dateService->isDateWithinRecurringTimePeriod({message.sendDate, startDate, message.repeatBy, timeWindow}))
         {
             continue;
         }

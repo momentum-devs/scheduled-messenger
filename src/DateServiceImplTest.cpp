@@ -26,7 +26,7 @@ TEST_F(DataServiceTest, giveSameDatesAndTimeFromWindowWithNoneRepeat_shouldRetur
 
 TEST_F(DataServiceTest, giveDifferentDatesAndTimeFromWindowWithNoneRepeat_shouldReturnTrue)
 {
-    IsDateWithinRecurringTimePeriodPayload payload{"2022-11-04 23:57", "2022-11-05 00:00", RepeatedBy::NONE, 5};
+    IsDateWithinRecurringTimePeriodPayload payload{"2022-11-04 23:57", "2022-11-05 00:01", RepeatedBy::NONE, 5};
 
     ASSERT_TRUE(dateService.isDateWithinRecurringTimePeriod(payload));
 }

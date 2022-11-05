@@ -7,5 +7,5 @@
 class RepeatedByMapperImpl : public RepeatedByMapper
 {
 public:
-    RepeatedBy map(std::optional<std::string> repeatedByStr) const override;
+    RepeatedBy map(const std::optional<std::string>& repeatedByStr) const override;
 };
