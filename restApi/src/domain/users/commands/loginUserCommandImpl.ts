@@ -4,6 +4,7 @@ import { HashService } from '../services/hashService.js';
 import { TokenService } from '../services/tokenService.js';
 import { LoginUserCommand } from './loginUserCommand.js';
 import { LoginUserCommandPayload } from './payloads/loginUserCommandPayload.js';
+import { LoginUserCommandResult } from './payloads/loginUserCommandResult.js';
 
 export class LoginUserCommandImpl implements LoginUserCommand {
   public constructor(
@@ -12,7 +13,7 @@ export class LoginUserCommandImpl implements LoginUserCommand {
     private readonly userRepository: UserRepository,
   ) {}
 
-  public async loginUser(input: LoginUserCommandPayload): Promise<string> {
+  public async loginUser(input: LoginUserCommandPayload): Promise<LoginUserCommandResult> {
     const { email, password } = LoginUserCommandPayload.create(input);
 
     console.log('Logging user in...', { email });
@@ -35,6 +36,6 @@ export class LoginUserCommandImpl implements LoginUserCommand {
 
     console.log('User logged in.', { email, id: user.id });
 
-    return accessToken;
+    return LoginUserCommandResult.create({ accessToken });
   }
 }

@@ -33,6 +33,12 @@ export class RestApiStack extends core.Stack {
       timeout: core.Duration.minutes(3),
     });
 
+    const loginUserLambda = new LambdaFunction(this, 'loginUserLambda', {
+      entry: lambdaPathFactory.create('loginUser/loginUserLambdaHandler.ts'),
+      environment: lambdaEnvironment,
+      timeout: core.Duration.minutes(3),
+    });
+
     const restApi = new RestApi(this, 'RestApi', {
       defaultCorsPreflightOptions: {
         allowOrigins: Cors.ALL_ORIGINS,
@@ -42,6 +48,12 @@ export class RestApiStack extends core.Stack {
 
     const usersResource = restApi.root.addResource('users');
 
-    usersResource.addMethod('POST', new LambdaIntegration(registerUserLambda));
+    const registerUserResource = usersResource.addResource('register');
+
+    registerUserResource.addMethod('POST', new LambdaIntegration(registerUserLambda));
+
+    const loginUserResource = usersResource.addResource('login');
+
+    loginUserResource.addMethod('POST', new LambdaIntegration(loginUserLambda));
   }
 }

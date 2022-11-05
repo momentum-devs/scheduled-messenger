@@ -51,7 +51,7 @@ describe('LoginUserCommandImpl', () => {
     expect(userRepository.findOne).toHaveBeenCalledWith({ email });
     expect(hashService.comparePasswords).toHaveBeenCalledWith(password, password);
     expect(tokenService.signAccessToken).toHaveBeenCalledWith({ id });
-    expect(result).toEqual(accessToken);
+    expect(result.accessToken).toEqual(accessToken);
   });
 
   it('throws when user not found', async () => {
