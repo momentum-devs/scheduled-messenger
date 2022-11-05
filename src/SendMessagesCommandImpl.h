@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <span>
 
 #include "DateService.h"
 #include "EmailClient.h"
@@ -16,6 +17,8 @@ public:
     void execute() const override;
 
 private:
+    void sendMessagesBatch(std::span<const Message> messagesBatch, const std::string& startDate) const;
+
     std::unique_ptr<EmailClient> emailClient;
     std::unique_ptr<MessageRepository> messageRepository;
     std::unique_ptr<DateService> dateService;
