@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-set(PROJECT_NAME scheduled-messenger)
+set(PROJECT_NAME send-emails-lambda-handler)
 project(${PROJECT_NAME} CXX)
 
 add_subdirectory(externals)

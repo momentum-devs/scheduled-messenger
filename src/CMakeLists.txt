@@ -14,13 +14,13 @@ set(UT_SOURCES
         MessageRepositoryMock.h
         )
 
-add_executable(scheduled-messenger Main.cpp ${SOURCES})
+add_executable(send-emails-lambda-handler Main.cpp ${SOURCES})
 
-target_link_libraries(scheduled-messenger PUBLIC mailio cpr fmt taopq AWS::aws-lambda-runtime)
+target_link_libraries(send-emails-lambda-handler PUBLIC mailio cpr fmt taopq AWS::aws-lambda-runtime)
 
-target_include_directories(scheduled-messenger PUBLIC ${GMOCK_INCLUDE_DIR} ${AWS_LAMBDA_CPP_INCLUDE_DIR})
+target_include_directories(send-emails-lambda-handler PUBLIC ${GMOCK_INCLUDE_DIR} ${AWS_LAMBDA_CPP_INCLUDE_DIR})
 
-aws_lambda_package_target(scheduled-messenger)
+aws_lambda_package_target(send-emails-lambda-handler)
 
 add_executable(scheduled-messengerUT ${UT_SOURCES} ${SOURCES})
 target_link_libraries(scheduled-messengerUT PUBLIC mailio cpr fmt taopq gtest gmock_main AWS::aws-lambda-runtime)

@@ -1,0 +1,42 @@
+{
+  "name": "@scheduled-messenger/main",
+  "private": true,
+  "scripts": {
+    "build": "lerna run build --concurrency 2 --stream",
+    "build:clean": "lerna run build:clean --concurrency 4 --stream",
+    "test": "lerna run test:run --concurrency 3 --stream"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.108",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@typescript-eslint/parser": "^5.41.0",
+    "dotenv": "^16.0.3",
+    "esbuild": "^0.15.12",
+    "eslint": "8.26.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "glob": "^8.0.3",
+    "lerna": "^6.0.1",
+    "prettier": "^2.7.1",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.8.4",
+    "vitest": "^0.24.3"
+  },
+  "dependencies": {
+    "tslib": "^2.4.0"
+  },
+  "volta": {
+    "node": "18.11.0"
+  },
+  "engines": {
+    "node": ">=18.0.0 <20",
+    "npm": ">=8.0.0"
+  },
+  "workspaces": [
+    "restApi",
+    "infrastructure"
+  ]
+}
