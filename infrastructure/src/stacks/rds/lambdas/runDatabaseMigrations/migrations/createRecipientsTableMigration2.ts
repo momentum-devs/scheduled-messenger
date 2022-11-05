@@ -8,12 +8,12 @@ export class CreateRecipientsTableMigration2 implements Migration {
   public async up({ schema }: Knex): Promise<void> {
     await schema.createTable('recipients', (table) => {
       table.text('id');
+      table.text('email').notNullable();
       table.text('name').notNullable();
       table.text('password').notNullable();
-      table.text('email').notNullable();
 
       table.primary(['id']);
-      table.unique(['email']);
+      table.unique(['email', 'name']);
     });
   }
 

@@ -10,6 +10,7 @@ export class CreateMessagesTableMigration3 implements Migration {
       table.text('id');
       table.text('title').notNullable();
       table.text('content').notNullable();
+      table.text('displayName').notNullable();
       table.text('send_date').notNullable();
       table.enum('repeat_by', ['DAY', 'WEEK', 'MONTH', 'YEAR']).notNullable();
       table.text('user_id');
