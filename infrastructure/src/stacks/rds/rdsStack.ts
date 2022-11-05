@@ -44,7 +44,7 @@ export class RdsStack extends core.Stack {
     const credentials = rds.Credentials.fromSecret(databaseCredentialsSecret as secrets.ISecret);
 
     this.databaseUsername = credentials.username;
-    this.databasePassword = credentials.password?.toString() as string;
+    this.databasePassword = credentials.password?.unsafeUnwrap() as string;
 
     this.databaseName = 'postgres';
 

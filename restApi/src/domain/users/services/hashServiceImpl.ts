@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { HashService } from './hashService.js';
 
 export class HashServiceImpl implements HashService {
