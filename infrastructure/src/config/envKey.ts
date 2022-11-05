@@ -4,4 +4,6 @@ export enum EnvKey {
   databaseUser = 'DB_USERNAME',
   databasePassword = 'DB_PASSWORD',
   databasePort = 'DB_PORT',
+  jwtSecret = 'JWT_SECRET',
+  jwtExpiresIn = 'JWT_EXPIRES_IN',
 }

@@ -23,10 +23,18 @@ export class RestApiStack extends core.Stack {
       [EnvKey.databaseUser]: appConfig.databaseUser,
       [EnvKey.databasePassword]: appConfig.databasePassword,
       [EnvKey.databasePort]: appConfig.databasePort,
+      [EnvKey.jwtSecret]: appConfig.jwtSecret,
+      [EnvKey.jwtExpiresIn]: appConfig.jwtExpiresIn,
     };
 
-    const createMessageLambda = new LambdaFunction(this, 'createMessageLambda', {
-      entry: lambdaPathFactory.create('createMessage/createMessageLambdaHandler.ts'),
+    const registerUserLambda = new LambdaFunction(this, 'registerUserLambda', {
+      entry: lambdaPathFactory.create('registerUser/registerUserLambdaHandler.ts'),
+      environment: lambdaEnvironment,
+      timeout: core.Duration.minutes(3),
+    });
+
+    const loginUserLambda = new LambdaFunction(this, 'loginUserLambda', {
+      entry: lambdaPathFactory.create('loginUser/loginUserLambdaHandler.ts'),
       environment: lambdaEnvironment,
       timeout: core.Duration.minutes(3),
     });
@@ -38,8 +46,14 @@ export class RestApiStack extends core.Stack {
       },
     });
 
-    const messages = restApi.root.addResource('messages');
+    const usersResource = restApi.root.addResource('users');
 
-    messages.addMethod('POST', new LambdaIntegration(createMessageLambda));
+    const registerUserResource = usersResource.addResource('register');
+
+    registerUserResource.addMethod('POST', new LambdaIntegration(registerUserLambda));
+
+    const loginUserResource = usersResource.addResource('login');
+
+    loginUserResource.addMethod('POST', new LambdaIntegration(loginUserLambda));
   }
 }

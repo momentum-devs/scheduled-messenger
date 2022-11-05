@@ -4,18 +4,21 @@ import * as rds from 'aws-cdk-lib/aws-rds';
 import * as secrets from 'aws-cdk-lib/aws-secretsmanager';
 import * as triggers from 'aws-cdk-lib/triggers';
 
-import { AppConfig } from '../../config/appConfig.js';
 import { LambdaPathFactory } from '../../common/lambdaPathFactory.js';
 import { LambdaFunction } from '../../common/nodejsLambdaFunction.js';
 import { EnvKey } from '../../config/envKey.js';
 
 export interface RdsStackProps extends core.StackProps {
   readonly vpc: ec2.Vpc;
-  readonly appConfig: AppConfig;
 }
 
 export class RdsStack extends core.Stack {
   public readonly databaseConnectionSecurityGroup: ec2.SecurityGroup;
+  public readonly databaseHost: string;
+  public readonly databasePort: string;
+  public readonly databaseUsername: string;
+  public readonly databasePassword: string;
+  public readonly databaseName: string;
 
   public constructor(scope: core.App, id: string, props: RdsStackProps) {
     super(scope, id, props);
@@ -38,9 +41,16 @@ export class RdsStack extends core.Stack {
       },
     });
 
+    const credentials = rds.Credentials.fromSecret(databaseCredentialsSecret as secrets.ISecret);
+
+    this.databaseUsername = credentials.username;
+    this.databasePassword = credentials.password?.unsafeUnwrap() as string;
+
+    this.databaseName = 'postgres';
+
     const databaseInstance = new rds.DatabaseInstance(this, 'database', {
       engine: rds.DatabaseInstanceEngine.postgres({ version: rds.PostgresEngineVersion.VER_14_3 }),
-      credentials: rds.Credentials.fromSecret(databaseCredentialsSecret as secrets.ISecret),
+      credentials,
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T4G, ec2.InstanceSize.MICRO),
       allocatedStorage: 10,
       vpc,
@@ -50,18 +60,20 @@ export class RdsStack extends core.Stack {
       allowMajorVersionUpgrade: false,
       autoMinorVersionUpgrade: false,
       multiAz: true,
+      databaseName: this.databaseName,
     });
+
+    this.databaseHost = databaseInstance.dbInstanceEndpointAddress;
+    this.databasePort = databaseInstance.dbInstanceEndpointPort;
 
     const lambdaPathFactory = new LambdaPathFactory('rds');
 
-    const { appConfig } = props;
-
     const lambdaEnvironment = {
-      [EnvKey.databaseName]: appConfig.databaseName,
-      [EnvKey.databaseHost]: appConfig.databaseHost,
-      [EnvKey.databaseUser]: appConfig.databaseUser,
-      [EnvKey.databasePassword]: appConfig.databasePassword,
-      [EnvKey.databasePort]: appConfig.databasePort,
+      [EnvKey.databaseName]: this.databaseName,
+      [EnvKey.databaseHost]: this.databaseHost,
+      [EnvKey.databaseUser]: this.databaseUsername,
+      [EnvKey.databasePassword]: this.databasePassword,
+      [EnvKey.databasePort]: this.databasePort,
     };
 
     const runDatabaseMigrationsLambda = new LambdaFunction(this, 'runDatabaseMigrationsLambda', {
