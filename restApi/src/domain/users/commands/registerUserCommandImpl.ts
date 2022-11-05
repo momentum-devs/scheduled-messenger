@@ -11,6 +11,8 @@ export class RegisterUserCommandImpl implements RegisterUserCommand {
   public async registerUser(input: RegisterUserCommandPayload): Promise<void> {
     const { email, password } = RegisterUserCommandPayload.create(input);
 
+    console.log('Creating user...', { email });
+
     const existingUser = await this.userRepository.findOne({ email });
 
     if (existingUser) {
@@ -22,5 +24,7 @@ export class RegisterUserCommandImpl implements RegisterUserCommand {
       email,
       password: await this.hashService.hashPassword(password),
     });
+
+    console.log('User created.', { email });
   }
 }

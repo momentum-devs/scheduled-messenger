@@ -16,6 +16,8 @@ const databasePassword = process.env[EnvKey.databasePassword];
 const databaseHost = process.env[EnvKey.databaseHost];
 const databasePort = process.env[EnvKey.databasePort];
 const databaseName = process.env[EnvKey.databaseName];
+const jwtSecret = process.env[EnvKey.jwtSecret];
+const jwtExpiresIn = process.env[EnvKey.jwtExpiresIn];
 
 console.log({ awsRegion, awsAccount, databaseUser, databasePassword, databaseHost, databasePort, databaseName });
 
@@ -26,7 +28,9 @@ if (
   !databasePassword ||
   !databaseHost ||
   !databasePort ||
-  !databaseName
+  !databaseName ||
+  !jwtSecret ||
+  !jwtExpiresIn
 ) {
   throw new Error('Missing environment variables');
 }
@@ -44,6 +48,8 @@ const appConfig: AppConfig = {
   databaseHost,
   databasePort,
   databaseName,
+  jwtSecret,
+  jwtExpiresIn,
 };
 
 const vpcStack = new VpcStack(app, 'Vpc', { env });

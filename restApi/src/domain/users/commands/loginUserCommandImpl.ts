@@ -15,6 +15,8 @@ export class LoginUserCommandImpl implements LoginUserCommand {
   public async loginUser(input: LoginUserCommandPayload): Promise<string> {
     const { email, password } = LoginUserCommandPayload.create(input);
 
+    console.log('Logging user in...', { email });
+
     const user = await this.userRepository.findOne({ email });
 
     if (!user) {
@@ -30,6 +32,8 @@ export class LoginUserCommandImpl implements LoginUserCommand {
     const accessToken = await this.tokenService.signAccessToken({
       id: user.id,
     });
+
+    console.log('User logged in.', { email, id: user.id });
 
     return accessToken;
   }

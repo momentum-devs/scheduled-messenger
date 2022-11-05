@@ -4,4 +4,6 @@ export interface AppConfig {
   readonly databaseName: string;
   readonly databaseUser: string;
   readonly databasePassword: string;
+  readonly jwtSecret: string;
+  readonly jwtExpiresIn: string;
 }

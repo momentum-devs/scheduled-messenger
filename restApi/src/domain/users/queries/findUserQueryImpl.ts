@@ -10,11 +10,15 @@ export class FindUserQueryImpl implements FindUserQuery {
   public async findUser(input: FindUserQueryPayload): Promise<User> {
     const { userId } = FindUserQueryPayload.create(input);
 
+    console.log('Fetching user...', { userId });
+
     const user = await this.userRepository.findOne({ id: userId });
 
     if (!user) {
       throw new UserNotFoundError({ id: userId });
     }
+
+    console.log('User fetched.', { userId });
 
     return user;
   }
