@@ -26,3 +26,7 @@ void SendMessagesCommandImpl::execute() const
         emailClient->sendEmail(emailPayload);
     }
 }
+bool SendMessagesCommandImpl::verifyDate(std::string)
+{
+    return false;
+}

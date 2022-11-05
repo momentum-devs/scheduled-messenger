@@ -14,6 +14,8 @@ public:
     void execute() const override;
 
 private:
+    bool verifyDate(std::string);
+
     std::unique_ptr<EmailClient> emailClient;
     std::unique_ptr<MessageRepository> messageRepository;
 };
