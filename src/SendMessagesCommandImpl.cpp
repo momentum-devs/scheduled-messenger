@@ -3,40 +3,35 @@
 #include "exceptions/EmailRequiredFieldsNotProvidedError.h"
 
 SendMessagesCommandImpl::SendMessagesCommandImpl(std::unique_ptr<EmailClient> emailClientInit,
-                                                 std::unique_ptr<MessageRepository> messageRepositoryInit)
-    : emailClient{std::move(emailClientInit)}, messageRepository{std::move(messageRepositoryInit)}
+                                                 std::unique_ptr<MessageRepository> messageRepositoryInit,
+                                                 std::unique_ptr<DateService> dateServiceInit)
+    : emailClient{std::move(emailClientInit)},
+      messageRepository{std::move(messageRepositoryInit)},
+      dateService{std::move(dateServiceInit)},
+      timeWindow{5}
 {
 }
 
 void SendMessagesCommandImpl::execute() const
 {
+    const auto startDate = dateService->getCurrentDate();
+
     const auto messages = messageRepository->findMany();
 
     // TODO: send async
     for (const auto& message : messages)
     {
-        validateEmailMessage(message);
+        if (!dateService->isDateWithinRecurringTimePeriod({message.sendDate, startDate, message.repeatBy, timeWindow}))
+        {
+            continue;
+        }
 
-        EmailSender emailSender{*message.user.emailAddress, *message.user.name, *message.user.emailPassword};
+        EmailSender emailSender{message.user.emailAddress, message.displayName, message.user.emailPassword};
 
-        EmailReceiver emailReceiver{*message.recipient.emailAddress, *message.recipient.name};
+        EmailReceiver emailReceiver{message.recipient.emailAddress, message.recipient.name};
 
-        SendEmailPayload emailPayload{emailSender, emailReceiver, *message.title, message.content};
+        SendEmailPayload emailPayload{emailSender, emailReceiver, message.title, message.text};
 
         emailClient->sendEmail(emailPayload);
-    }
-}
-
-void SendMessagesCommandImpl::validateEmailMessage(const Message& message) const
-{
-    const auto userIsValid = message.user.emailAddress && message.user.name && message.user.emailPassword;
-
-    const auto recipientIsValid = message.recipient.name && message.recipient.emailAddress;
-
-    const auto messageIsValid = message.title && userIsValid && recipientIsValid;
-
-    if (!messageIsValid)
-    {
-        throw EmailRequiredFieldsNotProvidedError{"Email required fields not provided."};
     }
 }
