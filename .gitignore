@@ -39,7 +39,7 @@
 .vscode
 cmake-build-debug
 .idea
-**/sendEmailsLambdaHandler.zip
+**.zip
 
 
 .idea

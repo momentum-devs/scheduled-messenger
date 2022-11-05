@@ -3,7 +3,7 @@ import 'source-map-support/register.js';
 import * as core from 'aws-cdk-lib';
 
 import { AppConfig } from './config/appConfig.js';
-import { MessengerStack } from './stacks/messenger/messengerStack.js';
+import { MessagesProcessingStack } from './stacks/messagesProcessing/messagesProcessingStack.js';
 import { RdsStack } from './stacks/rds/rdsStack.js';
 import { VpcStack } from './stacks/vpc/vpcStack.js';
 import { EnvKey } from './config/envKey.js';
@@ -53,6 +53,6 @@ const appConfig: AppConfig = {
   hashSaltRounds,
 };
 
-new MessengerStack(app, 'Messenger', { env, appConfig });
+new MessagesProcessingStack(app, 'MessagesProcessing', { env, appConfig });
 
 new RestApiStack(app, 'RestApi', { env, appConfig });

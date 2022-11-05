@@ -1,0 +1,2 @@
+add_subdirectory(sendMessages)
+add_subdirectory(deleteMessage)
