@@ -13,6 +13,7 @@ struct Message
     std::string title;
     std::string sendDate;
     RepeatedBy repeatBy;
+    std::string displayName;
     User user;
     Recipient recipient;
 };

@@ -24,7 +24,7 @@ void SendMessagesCommandImpl::execute() const
             continue;
         }
 
-        EmailSender emailSender{message.user.emailAddress, message.user.name, message.user.emailPassword};
+        EmailSender emailSender{message.user.emailAddress, message.displayName, message.user.emailPassword};
 
         EmailReceiver emailReceiver{message.recipient.emailAddress, message.recipient.name};
 
