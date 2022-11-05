@@ -25,6 +25,7 @@ export class RestApiStack extends core.Stack {
       [EnvKey.databasePort]: appConfig.databasePort,
       [EnvKey.jwtSecret]: appConfig.jwtSecret,
       [EnvKey.jwtExpiresIn]: appConfig.jwtExpiresIn,
+      [EnvKey.hashSaltRounds]: appConfig.hashSaltRounds,
     };
 
     const registerUserLambda = new LambdaFunction(this, 'registerUserLambda', {

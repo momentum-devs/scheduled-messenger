@@ -14,10 +14,11 @@ const awsAccount = process.env['AWS_ACCOUNT_ID'];
 
 const jwtSecret = process.env[EnvKey.jwtSecret];
 const jwtExpiresIn = process.env[EnvKey.jwtExpiresIn];
+const hashSaltRounds = process.env[EnvKey.hashSaltRounds];
 
-console.log({ awsRegion, awsAccount, jwtSecret, jwtExpiresIn });
+console.log({ awsRegion, awsAccount, jwtSecret, jwtExpiresIn, hashSaltRounds });
 
-if (!awsRegion || !awsAccount || !jwtSecret || !jwtExpiresIn) {
+if (!awsRegion || !awsAccount || !jwtSecret || !jwtExpiresIn || !hashSaltRounds) {
   throw new Error('Missing environment variables');
 }
 
@@ -49,6 +50,7 @@ const appConfig: AppConfig = {
   databasePassword,
   jwtSecret,
   jwtExpiresIn,
+  hashSaltRounds,
 };
 
 new MessengerStack(app, 'Messenger', { env, appConfig });

@@ -6,4 +6,5 @@ export enum EnvKey {
   databasePort = 'DB_PORT',
   jwtSecret = 'JWT_SECRET',
   jwtExpiresIn = 'JWT_EXPIRES_IN',
+  hashSaltRounds = 'HASH_SALT_ROUNDS',
 }

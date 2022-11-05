@@ -65,4 +65,3 @@ coverage
 cdk.out
 cdk.context.json
 
-infrastructure/

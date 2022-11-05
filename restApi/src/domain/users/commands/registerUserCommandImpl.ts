@@ -19,10 +19,12 @@ export class RegisterUserCommandImpl implements RegisterUserCommand {
       throw new UserAlreadyExistsError({ email });
     }
 
+    const hashedPassword = await this.hashService.hashPassword(password);
+
     await this.userRepository.createOne({
       id: uuidv4(),
       email,
-      password: await this.hashService.hashPassword(password),
+      password: hashedPassword,
     });
 
     console.log('User created.', { email });

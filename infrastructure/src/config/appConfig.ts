@@ -6,4 +6,5 @@ export interface AppConfig {
   readonly databasePassword: string;
   readonly jwtSecret: string;
   readonly jwtExpiresIn: string;
+  readonly hashSaltRounds: string;
 }

@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import { HashService } from './hashService.js';
 
 export class HashServiceImpl implements HashService {
-  private readonly hashSaltRounds = 15;
+  public constructor(private readonly hashSaltRounds: number) {}
 
   public async hashPassword(plaintextPassword: string): Promise<string> {
     const salt = await this.generateSalt();
@@ -16,7 +16,7 @@ export class HashServiceImpl implements HashService {
     return bcrypt.compare(plaintextPassword, hashedPassword);
   }
 
-  public async generateSalt(): Promise<string> {
+  private async generateSalt(): Promise<string> {
     return bcrypt.genSalt(this.hashSaltRounds);
   }
 }
