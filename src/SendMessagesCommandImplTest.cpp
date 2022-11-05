@@ -20,6 +20,7 @@ SendEmailPayload emailPayload{emailSender, emailReceiver, message.title, message
 IsDateWithinRecurringTimePeriodPayload isDateWithinRecurringTimePeriodPayloadInit{message.sendDate, startDate,
                                                                                   message.repeatBy, 5};
 std::vector<::Message> emptyMessagesVector{};
+std::vector<::Message> multipleMessages(100, message);
 }
 
 class SendMessagesCommandImplTest : public testing::Test
@@ -63,6 +64,18 @@ TEST_F(SendMessagesCommandImplTest, executeCommandWithoutAnyMessage)
 {
     EXPECT_CALL(*dateService, getCurrentDate()).WillOnce(Return(startDate));
     EXPECT_CALL(*messageRepository, findMany()).WillOnce(Return(emptyMessagesVector));
+
+    sendMessagesCommand.execute();
+}
+
+TEST_F(SendMessagesCommandImplTest, executeCommandWithMultipleMessages)
+{
+    EXPECT_CALL(*dateService, getCurrentDate()).WillOnce(Return(startDate));
+    EXPECT_CALL(*messageRepository, findMany()).WillOnce(Return(multipleMessages));
+    EXPECT_CALL(*dateService, isDateWithinRecurringTimePeriod(isDateWithinRecurringTimePeriodPayloadInit))
+        .Times(100)
+        .WillRepeatedly(Return(true));
+    EXPECT_CALL(*emailClient, sendEmail(emailPayload)).Times(100);
 
     sendMessagesCommand.execute();
 }

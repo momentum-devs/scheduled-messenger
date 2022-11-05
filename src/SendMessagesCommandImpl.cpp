@@ -1,5 +1,8 @@
 #include "SendMessagesCommandImpl.h"
 
+#include <functional>
+#include <future>
+
 #include "exceptions/EmailRequiredFieldsNotProvidedError.h"
 
 SendMessagesCommandImpl::SendMessagesCommandImpl(std::unique_ptr<EmailClient> emailClientInit,
@@ -18,8 +21,35 @@ void SendMessagesCommandImpl::execute() const
 
     const auto messages = messageRepository->findMany();
 
-    // TODO: send async
-    for (const auto& message : messages)
+    auto numberOfThreads = std::thread::hardware_concurrency();
+    if (numberOfThreads == 0)
+    {
+        numberOfThreads = 1;
+    }
+
+    std::vector<std::future<void>> futures(numberOfThreads);
+
+    for (auto i = 0l; i < numberOfThreads; ++i)
+    {
+        auto lowerLimit = i * messages.size() / numberOfThreads;
+        auto upperLimit = (i + 1) * messages.size() / numberOfThreads;
+        auto count = upperLimit - lowerLimit;
+
+        auto messageSpan = std::span{messages}.subspan(lowerLimit, count);
+
+        futures[i] = std::async(&SendMessagesCommandImpl::sendMessagesBatch, this, messageSpan, startDate);
+    }
+
+    for (auto& future : futures)
+    {
+        future.get();
+    }
+}
+
+void SendMessagesCommandImpl::sendMessagesBatch(std::span<const Message> messagesBatch,
+                                                const std::string& startDate) const
+{
+    for (const auto& message : messagesBatch)
     {
         if (!dateService->isDateWithinRecurringTimePeriod({message.sendDate, startDate, message.repeatBy, timeWindow}))
         {
