@@ -9,5 +9,5 @@ class MessageRepository
 public:
     virtual ~MessageRepository() = default;
 
-    virtual std::vector<Message> findMany() const = 0;
+    virtual std::vector<Message> findMany() = 0;
 };
