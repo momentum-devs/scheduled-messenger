@@ -10,7 +10,7 @@
 
 using namespace aws::lambda_runtime;
 
-invocation_response my_handler(invocation_request const& request)
+invocation_response my_handler(invocation_request const&)
 {
     DatabaseConfig databaseConfig{
         std::getenv("DB_USERNAME"), std::getenv("DB_PASSWORD"), std::getenv("DB_HOST"),

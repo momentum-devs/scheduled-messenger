@@ -1,21 +1,19 @@
 #include "MessageRepositoryImpl.h"
 
-#include <fmt/core.h>
-
 namespace
 {
-std::string messageId = "id";
-std::string messageTitle = "title";
-std::string messageContent = "content";
-std::string messageSendDate = "send_date";
-std::string messageRepeatBy = "repeat_by";
-std::string userId = "user.id";
-std::string userEmail = "user.email";
-std::string userPassword = "password";
-std::string recipientId = "recipient.id";
-std::string recipientEmail = "recipient.email";
-std::string recipientName = "recipient.name";
-std::string display_name = "display_name";
+const auto messageId = "id";
+const auto messageTitle = "title";
+const auto messageContent = "content";
+const auto messageSendDate = "send_date";
+const auto messageRepeatBy = "repeat_by";
+const auto userId = "user.id";
+const auto userEmail = "user.email";
+const auto userPassword = "password";
+const auto recipientId = "recipient.id";
+const auto recipientEmail = "recipient.email";
+const auto recipientName = "recipient.name";
+const auto display_name = "display_name";
 }
 
 MessageRepositoryImpl::MessageRepositoryImpl(std::unique_ptr<DatabaseConnector> databaseConnectorInit,
