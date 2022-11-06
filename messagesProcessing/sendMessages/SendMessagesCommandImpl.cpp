@@ -22,6 +22,7 @@ void SendMessagesCommandImpl::execute() const
     const auto messages = messageRepository->findMany();
 
     auto numberOfThreads = std::thread::hardware_concurrency();
+
     if (numberOfThreads == 0)
     {
         numberOfThreads = 1;
