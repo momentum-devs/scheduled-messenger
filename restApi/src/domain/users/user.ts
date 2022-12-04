@@ -1,8 +1,8 @@
-import { IsString } from '../../common/validator/decorators.js';
+import { IsString, IsUuidV4 } from '../../common/validator/decorators.js';
 import { Validator } from '../../common/validator/validator.js';
 
 export class User {
-  @IsString()
+  @IsUuidV4()
   public readonly id: string;
 
   @IsString()
@@ -11,15 +11,11 @@ export class User {
   @IsString()
   public readonly password: string;
 
-  private constructor({ id, email, password }: User) {
+  public constructor({ id, email, password }: User) {
     this.id = id;
     this.email = email;
     this.password = password;
 
     Validator.validate(this);
-  }
-
-  public static create(input: User): User {
-    return new User({ ...input });
   }
 }

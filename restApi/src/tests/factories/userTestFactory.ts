@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 
 export class UserTestFactory {
   public create(input: Partial<User> = {}): User {
-    return User.create({
+    return new User({
       id: faker.datatype.uuid(),
       email: faker.internet.email(),
       password: faker.internet.password(),

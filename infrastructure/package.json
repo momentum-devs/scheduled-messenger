@@ -12,7 +12,7 @@
     "test": "vitest",
     "test:watch": "npm run test -- --watch",
     "deploy": "cdk deploy",
-    "deploy:all": "cdk deploy --all",
+    "deploy:all": "cdk deploy --all --require-approval never",
     "deploy:prepare": "cdk bootstrap --require-approval never",
     "destroy": "cdk destroy",
     "destroy:all": "npm run destroy -- --all --require-approval never"

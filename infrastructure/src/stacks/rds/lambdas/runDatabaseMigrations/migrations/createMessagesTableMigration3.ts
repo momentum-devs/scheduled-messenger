@@ -10,15 +10,15 @@ export class CreateMessagesTableMigration3 implements Migration {
       table.text('id');
       table.text('title').notNullable();
       table.text('content').notNullable();
-      table.text('display_name').notNullable();
-      table.text('send_date').notNullable();
-      table.enum('repeat_by', ['DAY', 'WEEK', 'MONTH', 'YEAR']);
-      table.text('user_id');
-      table.text('recipient_id');
+      table.text('displayName').notNullable();
+      table.text('sendDate').notNullable();
+      table.enum('repeatBy', ['DAY', 'WEEK', 'MONTH', 'YEAR']);
+      table.text('userId');
+      table.text('recipientId');
 
       table.primary(['id']);
-      table.foreign('user_id').references('id').inTable('users').onDelete('CASCADE');
-      table.foreign('recipient_id').references('id').inTable('recipients').onDelete('CASCADE');
+      table.foreign('userId').references('id').inTable('users').onDelete('CASCADE');
+      table.foreign('recipientId').references('id').inTable('recipients').onDelete('CASCADE');
     });
   }
 
