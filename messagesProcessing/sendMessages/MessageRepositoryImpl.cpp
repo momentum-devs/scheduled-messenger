@@ -5,15 +5,15 @@ namespace
 const auto messageId = "id";
 const auto messageTitle = "title";
 const auto messageContent = "content";
-const auto messageSendDate = "send_date";
-const auto messageRepeatBy = "repeat_by";
+const auto messageSendDate = "sendDate";
+const auto messageRepeatBy = "repeatBy";
 const auto userId = "user.id";
 const auto userEmail = "user.email";
 const auto userPassword = "password";
 const auto recipientId = "recipient.id";
 const auto recipientEmail = "recipient.email";
 const auto recipientName = "recipient.name";
-const auto display_name = "display_name";
+const auto displayName = "displayName";
 }
 
 MessageRepositoryImpl::MessageRepositoryImpl(std::unique_ptr<DatabaseConnector> databaseConnectorInit,
@@ -34,9 +34,9 @@ std::vector<Message> MessageRepositoryImpl::findMany()
                                         messages.title,
                                         messages."content",
                                         messages."type",
-                                        messages.send_date,
-                                        messages.repeat_by,
-                                        messages.display_name as display_name,
+                                        messages.sendDate,
+                                        messages.repeatBy,
+                                        messages.displayName as displayName,
                                         users."id" as "user.id",
                                         users."password",
                                         users.email as "user.email",
@@ -44,8 +44,8 @@ std::vector<Message> MessageRepositoryImpl::findMany()
                                         recipients."name" as "recipient.name",
                                         recipients.email as "recipient.email",
                                     FROM messages
-                                        JOIN users on (messages.user_id = users.id)
-                                        JOIN recipients ON (messages.recipient_id = recipients.id);)";
+                                        JOIN users on (messages.userId = users.id)
+                                        JOIN recipients ON (messages.recipientId = recipients.id);)";
 
     const auto messagesRows = connection->execute(findManyMessagesQuery);
 
@@ -62,7 +62,7 @@ std::vector<Message> MessageRepositoryImpl::findMany()
                         messageRow[messageTitle].as<std::string>(),
                         messageRow[messageSendDate].as<std::string>(),
                         repeatedByMapper->map(messageRow[messageRepeatBy].as<std::optional<std::string>>()),
-                        messageRow[display_name].as<std::string>(),
+                        messageRow[displayName].as<std::string>(),
                         user,
                         recipient};
 

@@ -3,6 +3,7 @@
 #include "DatabaseConfig.h"
 #include "DatabaseConnector.h"
 #include "DateServiceImpl.h"
+#include "EventSenderImpl.h"
 #include "MailioClient.h"
 #include "MessageRepositoryImpl.h"
 #include "RepeatedByMapperImpl.h"
@@ -22,9 +23,10 @@ invocation_response my_handler(invocation_request const&)
     std::unique_ptr<MessageRepository> messageRepository =
         std::make_unique<MessageRepositoryImpl>(std::move(databaseConnector), std::move(repeatedByMapper));
     std::unique_ptr<DateService> dateService = std::make_unique<DateServiceImpl>();
+    std::unique_ptr<EventSender> eventSender = std::make_unique<EventSenderImpl>();
 
     SendMessagesCommandImpl sendMessagesCommand{std::move(emailClient), std::move(messageRepository),
-                                                std::move(dateService)};
+                                                std::move(dateService), std::move(eventSender)};
 
     sendMessagesCommand.execute();
 
