@@ -13,3 +13,6 @@
 [submodule "externals/aws-lambda-cpp"]
 	path = externals/aws-lambda-cpp
 	url = https://github.com/awslabs/aws-lambda-cpp.git
+[submodule "externals/aws-sdk-cpp"]
+	path = externals/aws-sdk-cpp
+	url = https://github.com/aws/aws-sdk-cpp.git

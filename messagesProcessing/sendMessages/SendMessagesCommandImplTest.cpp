@@ -5,6 +5,7 @@
 
 #include "DateServiceMock.h"
 #include "EmailClientMock.h"
+#include "EventSenderMock.h"
 #include "MessageRepositoryMock.h"
 
 using namespace ::testing;
@@ -12,13 +13,18 @@ using namespace ::testing;
 namespace
 {
 std::string startDate{"startDate"};
-::Message message{"id", "text", "title", "sendDate", RepeatedBy::NONE, "displayName", {}, {}};
+std::unique_ptr<Config> config{std::make_unique<Config>(DatabaseConfig{}, "resourceArn")};
+::Message message{"id", "text", "title", "sendDate", RepeatedBy::DAY, "displayName", {}, {}};
+::Message messageNonRepeated{"id", "text", "title", "sendDate", RepeatedBy::NONE, "displayName", {}, {}};
 std::vector<::Message> messages{message};
+std::vector<::Message> messagesNonRepeated{messageNonRepeated};
 EmailSender emailSender{message.user.emailAddress, message.displayName, message.user.emailPassword};
 EmailReceiver emailReceiver{message.recipient.emailAddress, message.recipient.name};
 SendEmailPayload emailPayload{emailSender, emailReceiver, message.title, message.text};
 IsDateWithinRecurringTimePeriodPayload isDateWithinRecurringTimePeriodPayloadInit{message.sendDate, startDate,
                                                                                   message.repeatBy, 5};
+IsDateWithinRecurringTimePeriodPayload isDateWithinRecurringTimePeriodPayloadNonRecurringInit{
+    messageNonRepeated.sendDate, startDate, messageNonRepeated.repeatBy, 5};
 std::vector<::Message> emptyMessagesVector{};
 std::vector<::Message> multipleMessages(100, message);
 }
@@ -35,8 +41,11 @@ public:
     std::unique_ptr<DateServiceMock> dateServiceInit{std::make_unique<DateServiceMock>()};
     DateServiceMock* dateService{dateServiceInit.get()};
 
+    std::unique_ptr<EventSenderMock> eventSenderInit{std::make_unique<EventSenderMock>()};
+    EventSenderMock* eventSender{eventSenderInit.get()};
+
     SendMessagesCommandImpl sendMessagesCommand{std::move(emailClientInit), std::move(messageRepositoryInit),
-                                                std::move(dateServiceInit)};
+                                                std::move(dateServiceInit), std::move(eventSenderInit), config};
 };
 
 TEST_F(SendMessagesCommandImplTest, executeCommand)
@@ -46,6 +55,18 @@ TEST_F(SendMessagesCommandImplTest, executeCommand)
     EXPECT_CALL(*dateService, isDateWithinRecurringTimePeriod(isDateWithinRecurringTimePeriodPayloadInit))
         .WillOnce(Return(true));
     EXPECT_CALL(*emailClient, sendEmail(emailPayload));
+
+    sendMessagesCommand.execute();
+}
+
+TEST_F(SendMessagesCommandImplTest, executeCommandWithNonRepeatedMessage_shouldSendEvent)
+{
+    EXPECT_CALL(*dateService, getCurrentDate()).WillOnce(Return(startDate));
+    EXPECT_CALL(*messageRepository, findMany()).WillOnce(Return(messagesNonRepeated));
+    EXPECT_CALL(*dateService, isDateWithinRecurringTimePeriod(isDateWithinRecurringTimePeriodPayloadNonRecurringInit))
+        .WillOnce(Return(true));
+    EXPECT_CALL(*emailClient, sendEmail(emailPayload));
+    EXPECT_CALL(*eventSender, sendDeleteRecordEvent(_));
 
     sendMessagesCommand.execute();
 }

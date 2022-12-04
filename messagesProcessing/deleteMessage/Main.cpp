@@ -1,4 +1,5 @@
 #include <aws/lambda-runtime/runtime.h>
+#include <iostream>
 #include <memory>
 
 #include "DatabaseConfig.h"
@@ -9,9 +10,10 @@
 
 using namespace aws::lambda_runtime;
 
-invocation_response my_handler(invocation_request const&)
+invocation_response my_handler(invocation_request const& request)
 {
-    const auto dummyId = "dummyId";
+    const auto idToDelete = request.payload;
+    std::cout << idToDelete << std::endl;
 
     DatabaseConfig databaseConfig{
         std::getenv("DB_USERNAME"), std::getenv("DB_PASSWORD"), std::getenv("DB_HOST"),
@@ -22,8 +24,8 @@ invocation_response my_handler(invocation_request const&)
         std::make_unique<MessageRepositoryImpl>(std::move(databaseConnector));
 
     DeleteMessageCommandImpl deleteMessageCommand{std::move(messageRepository)};
-    
-    deleteMessageCommand.execute(dummyId);
+
+    deleteMessageCommand.execute(idToDelete);
 
     return invocation_response::success({R"({"hello": "world"})"}, "application/json");
 }
