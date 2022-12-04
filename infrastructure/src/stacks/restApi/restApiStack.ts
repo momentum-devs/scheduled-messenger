@@ -40,6 +40,24 @@ export class RestApiStack extends core.Stack {
       timeout: core.Duration.minutes(3),
     });
 
+    const createMessageLambda = new LambdaFunction(this, 'createMessageLambda', {
+      entry: lambdaPathFactory.create('createMessage/createMessageLambdaHandler.ts'),
+      environment: lambdaEnvironment,
+      timeout: core.Duration.minutes(3),
+    });
+
+    const getMessagesLambda = new LambdaFunction(this, 'getMessagesLambda', {
+      entry: lambdaPathFactory.create('getMessages/getMessagesLambdaHandler.ts'),
+      environment: lambdaEnvironment,
+      timeout: core.Duration.minutes(3),
+    });
+
+    const createRecipientLambda = new LambdaFunction(this, 'createRecipientLambda', {
+      entry: lambdaPathFactory.create('createRecipient/createRecipientLambdaHandler.ts'),
+      environment: lambdaEnvironment,
+      timeout: core.Duration.minutes(3),
+    });
+
     const restApi = new RestApi(this, 'RestApi', {
       defaultCorsPreflightOptions: {
         allowOrigins: Cors.ALL_ORIGINS,
@@ -56,5 +74,15 @@ export class RestApiStack extends core.Stack {
     const loginUserResource = usersResource.addResource('login');
 
     loginUserResource.addMethod('POST', new LambdaIntegration(loginUserLambda));
+
+    const messagesResource = restApi.root.addResource('messages');
+
+    messagesResource.addMethod('POST', new LambdaIntegration(createMessageLambda));
+
+    messagesResource.addMethod('GET', new LambdaIntegration(getMessagesLambda));
+
+    const recipientsResource = restApi.root.addResource('recipients');
+
+    recipientsResource.addMethod('POST', new LambdaIntegration(createRecipientLambda));
   }
 }

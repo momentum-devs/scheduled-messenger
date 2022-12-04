@@ -30,9 +30,7 @@ export class LoginUserCommandImpl implements LoginUserCommand {
       throw new UserNotFoundError({ email });
     }
 
-    const accessToken = await this.tokenService.signAccessToken({
-      id: user.id,
-    });
+    const accessToken = await this.tokenService.signAccessToken({ userId: user.id });
 
     console.log('User logged in.', { email, id: user.id });
 

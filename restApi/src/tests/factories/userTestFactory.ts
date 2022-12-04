@@ -1,4 +1,4 @@
-import { User } from '../../domain/users/user.js';
+import { User } from '../../domain/user/user.js';
 import { faker } from '@faker-js/faker';
 
 export class UserTestFactory {

@@ -5,7 +5,7 @@ import { CreateOnePayload } from './payloads/createOnePayload.js';
 import { RecipientRepository } from './recipientRepository.js';
 import { Recipient } from '../recipient.js';
 
-export class MessageRepositoryImpl implements RecipientRepository {
+export class RecipientRepositoryImpl implements RecipientRepository {
   private readonly recipientsTableName = 'recipients';
 
   public constructor(private readonly queryBuilder: QueryBuilder, private readonly recipientMapper: RecipientMapper) {}

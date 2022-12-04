@@ -8,8 +8,8 @@ interface IdContext {
   readonly id: string;
 }
 
-export class UserNotFoundError extends ApplicationError<EmailContext | IdContext> {
-  public constructor(context: EmailContext | IdContext) {
+export class UserNotFoundError extends ApplicationError<EmailContext | IdContext | void> {
+  public constructor(context: EmailContext | IdContext | void) {
     super('UserNotFoundError', 'User not found.', context);
   }
 }
