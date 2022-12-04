@@ -72,8 +72,8 @@ void SendMessagesCommandImpl::sendMessagesBatch(std::span<const Message> message
 
         if (message.repeatBy == RepeatedBy::NONE)
         {
-            eventSender->sendDeleteRecordEvent(SendEventPayload{fmt::format("{}", message.id), "messageIdToDelete",
-                                                                config->resourceArn, "sendMessagesLambdaHandler"});
+            eventSender->sendDeleteRecordEvent(SendEventPayload{fmt::format("{}", message.id), "DeleteMessage",
+                                                                config->eventBusArn, "com.messages.delete"});
         }
     }
 }

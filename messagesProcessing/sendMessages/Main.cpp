@@ -22,8 +22,7 @@ invocation_response my_handler(invocation_request const&)
             std::getenv("DB_PORT"),
             std::getenv("DB_NAME"),
         },
-        std::getenv("RESOURCE_ARN")
-    );
+        std::getenv("EVENT_BUS_ARN"));
 
     std::unique_ptr<DatabaseConnector> databaseConnector = std::make_unique<DatabaseConnector>(config);
     std::unique_ptr<EmailClient> emailClient = std::make_unique<MailioClient>();
@@ -32,6 +31,9 @@ invocation_response my_handler(invocation_request const&)
         std::make_unique<MessageRepositoryImpl>(std::move(databaseConnector), std::move(repeatedByMapper));
     std::unique_ptr<DateService> dateService = std::make_unique<DateServiceImpl>();
     std::unique_ptr<EventSender> eventSender = std::make_unique<EventSenderImpl>();
+
+    eventSender->sendDeleteRecordEvent(
+        SendEventPayload{"123", "DeleteMessage", config->eventBusArn, "com.messages.delete"});
 
     SendMessagesCommandImpl sendMessagesCommand{std::move(emailClient), std::move(messageRepository),
                                                 std::move(dateService), std::move(eventSender), config};

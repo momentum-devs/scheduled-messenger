@@ -4,8 +4,8 @@
 
 struct Config
 {
-    Config(DatabaseConfig databaseConfigInit, std::string resourceArnInit)
-        : databaseConfig(databaseConfigInit), resourceArn(resourceArnInit){};
+    Config(DatabaseConfig databaseConfigInit, std::string eventBusArnInit)
+        : databaseConfig(databaseConfigInit), eventBusArn(eventBusArnInit){};
     DatabaseConfig databaseConfig;
-    std::string resourceArn;
+    std::string eventBusArn;
 };
