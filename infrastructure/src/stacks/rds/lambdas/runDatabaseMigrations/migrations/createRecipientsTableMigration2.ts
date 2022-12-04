@@ -10,7 +10,6 @@ export class CreateRecipientsTableMigration2 implements Migration {
       table.text('id');
       table.text('email').notNullable();
       table.text('name').notNullable();
-      table.text('password').notNullable();
 
       table.primary(['id']);
       table.unique(['email', 'name']);
