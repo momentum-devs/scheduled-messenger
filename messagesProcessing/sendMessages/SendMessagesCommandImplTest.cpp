@@ -13,6 +13,7 @@ using namespace ::testing;
 namespace
 {
 std::string startDate{"startDate"};
+std::unique_ptr<Config> config{std::make_unique<Config>(DatabaseConfig{}, "resourceArn")};
 ::Message message{"id", "text", "title", "sendDate", RepeatedBy::DAY, "displayName", {}, {}};
 ::Message messageNonRepeated{"id", "text", "title", "sendDate", RepeatedBy::NONE, "displayName", {}, {}};
 std::vector<::Message> messages{message};
@@ -44,7 +45,7 @@ public:
     EventSenderMock* eventSender{eventSenderInit.get()};
 
     SendMessagesCommandImpl sendMessagesCommand{std::move(emailClientInit), std::move(messageRepositoryInit),
-                                                std::move(dateServiceInit), std::move(eventSenderInit)};
+                                                std::move(dateServiceInit), std::move(eventSenderInit), config};
 };
 
 TEST_F(SendMessagesCommandImplTest, executeCommand)

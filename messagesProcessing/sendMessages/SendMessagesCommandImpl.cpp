@@ -9,11 +9,13 @@
 SendMessagesCommandImpl::SendMessagesCommandImpl(std::unique_ptr<EmailClient> emailClientInit,
                                                  std::unique_ptr<MessageRepository> messageRepositoryInit,
                                                  std::unique_ptr<DateService> dateServiceInit,
-                                                 std::unique_ptr<EventSender> eventSenderInit)
+                                                 std::unique_ptr<EventSender> eventSenderInit,
+                                                 const std::unique_ptr<Config>& configInit)
     : emailClient{std::move(emailClientInit)},
       messageRepository{std::move(messageRepositoryInit)},
       dateService{std::move(dateServiceInit)},
       eventSender{std::move(eventSenderInit)},
+      config{configInit},
       timeWindow{5}
 {
 }
@@ -71,8 +73,7 @@ void SendMessagesCommandImpl::sendMessagesBatch(std::span<const Message> message
         if (message.repeatBy == RepeatedBy::NONE)
         {
             eventSender->sendDeleteRecordEvent(SendEventPayload{fmt::format("{}", message.id), "messageIdToDelete",
-                                                                std::getenv("RESOURCE_ARN"),
-                                                                "sendMessagesLambdaHandler"});
+                                                                config->resourceArn, "sendMessagesLambdaHandler"});
         }
     }
 }
