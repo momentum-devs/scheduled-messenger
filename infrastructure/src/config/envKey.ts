@@ -7,4 +7,5 @@ export enum EnvKey {
   jwtSecret = 'JWT_SECRET',
   jwtExpiresIn = 'JWT_EXPIRES_IN',
   hashSaltRounds = 'HASH_SALT_ROUNDS',
+  eventBusArn = 'EVENT_BUS_ARN',
 }
