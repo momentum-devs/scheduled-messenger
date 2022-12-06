@@ -12,8 +12,10 @@ using namespace ::testing;
 namespace
 {
 std::string startDate{"startDate"};
-::Message message{"id", "text", "title", "sendDate", RepeatedBy::DAY, "displayName", {}, {}};
-::Message messageNonRepeated{"id", "text", "title", "sendDate", RepeatedBy::NONE, "displayName", {}, {}};
+const auto messageId1 = "id1";
+const auto messageId2 = "id1";
+::Message message{messageId1, "text", "title", "sendDate", RepeatedBy::DAY, "displayName", {}, {}};
+::Message messageNonRepeated{messageId2, "text", "title", "sendDate", RepeatedBy::NONE, "displayName", {}, {}};
 std::vector<::Message> messages{message};
 std::vector<::Message> messagesNonRepeated{messageNonRepeated};
 EmailSender emailSender{message.user.emailAddress, message.displayName, message.user.emailPassword};
@@ -54,13 +56,14 @@ TEST_F(SendMessagesCommandImplTest, executeCommand)
     sendMessagesCommand.execute();
 }
 
-TEST_F(SendMessagesCommandImplTest, executeCommandWithNonRepeatedMessage_shouldSendEvent)
+TEST_F(SendMessagesCommandImplTest, executeCommandWithNonRepeatedMessage_shouldDeleteMessages)
 {
     EXPECT_CALL(*dateService, getCurrentDate()).WillOnce(Return(startDate));
     EXPECT_CALL(*messageRepository, findMany()).WillOnce(Return(messagesNonRepeated));
     EXPECT_CALL(*dateService, isDateWithinRecurringTimePeriod(isDateWithinRecurringTimePeriodPayloadNonRecurringInit))
         .WillOnce(Return(true));
     EXPECT_CALL(*emailClient, sendEmail(emailPayload));
+    EXPECT_CALL(*messageRepository, deleteOne(messageId2));
 
     sendMessagesCommand.execute();
 }

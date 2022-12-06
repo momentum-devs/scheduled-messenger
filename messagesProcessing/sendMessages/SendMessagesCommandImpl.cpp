@@ -67,7 +67,7 @@ void SendMessagesCommandImpl::sendMessagesBatch(std::span<const Message> message
 
         if (message.repeatBy == RepeatedBy::NONE)
         {
-            // TODO: add removing message
+            messageRepository->deleteOne(message.id);
         }
     }
 }
