@@ -9,8 +9,8 @@ import { VpcStack } from './stacks/vpc/vpcStack.js';
 import { EnvKey } from './config/envKey.js';
 import { RestApiStack } from './stacks/restApi/restApiStack.js';
 
-const awsRegion = process.env['AWS_REGION'] || process.env['AWS_DEFAULT_REGION'];
-const awsAccount = process.env['AWS_ACCOUNT_ID'];
+const awsRegion = process.env[EnvKey.awsRegion] || process.env[EnvKey.awsDefaultRegion];
+const awsAccount = process.env[EnvKey.awsAccountId];
 
 const jwtSecret = process.env[EnvKey.jwtSecret];
 const jwtExpiresIn = process.env[EnvKey.jwtExpiresIn];

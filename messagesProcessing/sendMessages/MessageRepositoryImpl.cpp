@@ -1,5 +1,7 @@
 #include "MessageRepositoryImpl.h"
 
+#include <fmt/core.h>
+
 namespace
 {
 const auto messageId = "id";
@@ -70,4 +72,13 @@ std::vector<Message> MessageRepositoryImpl::findMany()
     }
 
     return messages;
+}
+
+void MessageRepositoryImpl::deleteOne(const std::string& id)
+{
+    const auto connection = databaseConnector->getConnection();
+
+    const auto deleteMessageQuery = fmt::format("DELETE FROM messages WHERE id = {}", id);
+
+    connection->execute(deleteMessageQuery);
 }

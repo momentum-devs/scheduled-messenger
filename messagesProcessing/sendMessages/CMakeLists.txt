@@ -12,12 +12,11 @@ set(UT_SOURCES
         SendMessagesCommandImplTest.cpp
         EmailClientMock.h
         MessageRepositoryMock.h
-        EventSenderMock.h
         )
 
-add_executable(send-messages-lambda-handler Main.cpp ${SOURCES} EventSenderImpl.cpp)
+add_executable(send-messages-lambda-handler Main.cpp ${SOURCES})
 
-target_link_libraries(send-messages-lambda-handler PUBLIC mailio fmt taopq AWS::aws-lambda-runtime ${AWSSDK_LINK_LIBRARIES})
+target_link_libraries(send-messages-lambda-handler PUBLIC mailio fmt taopq AWS::aws-lambda-runtime)
 
 target_include_directories(send-messages-lambda-handler PUBLIC ${GMOCK_INCLUDE_DIR} ${AWS_LAMBDA_CPP_INCLUDE_DIR})
 

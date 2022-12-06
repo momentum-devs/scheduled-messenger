@@ -5,7 +5,6 @@
 
 #include "DateServiceMock.h"
 #include "EmailClientMock.h"
-#include "EventSenderMock.h"
 #include "MessageRepositoryMock.h"
 
 using namespace ::testing;
@@ -13,7 +12,6 @@ using namespace ::testing;
 namespace
 {
 std::string startDate{"startDate"};
-std::unique_ptr<Config> config{std::make_unique<Config>(DatabaseConfig{}, "resourceArn")};
 ::Message message{"id", "text", "title", "sendDate", RepeatedBy::DAY, "displayName", {}, {}};
 ::Message messageNonRepeated{"id", "text", "title", "sendDate", RepeatedBy::NONE, "displayName", {}, {}};
 std::vector<::Message> messages{message};
@@ -41,11 +39,8 @@ public:
     std::unique_ptr<DateServiceMock> dateServiceInit{std::make_unique<DateServiceMock>()};
     DateServiceMock* dateService{dateServiceInit.get()};
 
-    std::unique_ptr<EventSenderMock> eventSenderInit{std::make_unique<EventSenderMock>()};
-    EventSenderMock* eventSender{eventSenderInit.get()};
-
     SendMessagesCommandImpl sendMessagesCommand{std::move(emailClientInit), std::move(messageRepositoryInit),
-                                                std::move(dateServiceInit), std::move(eventSenderInit), config};
+                                                std::move(dateServiceInit)};
 };
 
 TEST_F(SendMessagesCommandImplTest, executeCommand)
@@ -66,7 +61,6 @@ TEST_F(SendMessagesCommandImplTest, executeCommandWithNonRepeatedMessage_shouldS
     EXPECT_CALL(*dateService, isDateWithinRecurringTimePeriod(isDateWithinRecurringTimePeriodPayloadNonRecurringInit))
         .WillOnce(Return(true));
     EXPECT_CALL(*emailClient, sendEmail(emailPayload));
-    EXPECT_CALL(*eventSender, sendDeleteRecordEvent(_));
 
     sendMessagesCommand.execute();
 }

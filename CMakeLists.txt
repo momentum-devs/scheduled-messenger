@@ -5,7 +5,6 @@ project(${PROJECT_NAME} CXX)
 
 add_subdirectory(externals)
 
-find_package(AWSSDK REQUIRED COMPONENTS core events eventbridge)
 find_package(aws-lambda-runtime REQUIRED)
 
 set(CMAKE_CXX_STANDARD 20)

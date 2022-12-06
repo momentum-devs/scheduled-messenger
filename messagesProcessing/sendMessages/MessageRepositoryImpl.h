@@ -11,8 +11,9 @@ class MessageRepositoryImpl : public MessageRepository
 public:
     MessageRepositoryImpl(std::unique_ptr<DatabaseConnector> databaseConnectorInit,
                           std::unique_ptr<RepeatedByMapper> repeatedByMapperInit);
-    
+
     std::vector<Message> findMany() override;
+    void deleteOne(const std::string& id) override;
 
 private:
     std::unique_ptr<DatabaseConnector> databaseConnector;
