@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <future>
+#include <sstream>
 
 #include "exceptions/EmailRequiredFieldsNotProvidedError.h"
 #include "fmt/format.h"
@@ -10,14 +11,17 @@ SendMessagesCommandImpl::SendMessagesCommandImpl(std::unique_ptr<EmailClient> em
                                                  std::unique_ptr<MessageRepository> messageRepositoryInit,
                                                  std::unique_ptr<DateService> dateServiceInit,
                                                  std::unique_ptr<EventSender> eventSenderInit,
-                                                 const std::unique_ptr<Config>& configInit)
+                                                 std::unique_ptr<HostResolver> hostResolverInit,
+                                                 const Config& configInit)
     : emailClient{std::move(emailClientInit)},
       messageRepository{std::move(messageRepositoryInit)},
       dateService{std::move(dateServiceInit)},
       eventSender{std::move(eventSenderInit)},
-      config{configInit},
-      timeWindow{5}
+      hostResolver{std::move(hostResolverInit)},
+      config{configInit}
 {
+    std::stringstream ss{config.timeWindow};
+    ss >> timeWindow;
 }
 
 void SendMessagesCommandImpl::execute() const
@@ -66,14 +70,15 @@ void SendMessagesCommandImpl::sendMessagesBatch(std::span<const Message> message
 
         EmailReceiver emailReceiver{message.recipient.emailAddress, message.recipient.name};
 
-        SendEmailPayload emailPayload{emailSender, emailReceiver, message.title, message.text};
+        SendEmailPayload emailPayload{emailSender, emailReceiver, message.title, message.text,
+                                      hostResolver->resolve(message.user.emailAddress)};
 
         emailClient->sendEmail(emailPayload);
 
         if (message.repeatBy == RepeatedBy::NONE)
         {
-            eventSender->sendDeleteRecordEvent(SendEventPayload{fmt::format("{}", message.id), "DeleteMessage",
-                                                                config->eventBusArn, "com.messages.delete"});
+            eventSender->sendEvent(SendEventPayload{fmt::format("{}", message.id), "DeleteMessage", config.eventBusArn,
+                                                    "com.messages.delete"});
         }
     }
 }

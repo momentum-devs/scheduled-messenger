@@ -5,5 +5,5 @@
 class EventSenderImpl : public EventSender
 {
 public:
-    void sendDeleteRecordEvent(SendEventPayload payload) override;
+    void sendEvent(const SendEventPayload& payload) override;
 };

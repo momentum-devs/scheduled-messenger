@@ -5,9 +5,6 @@
 
 #include "exceptions/MailioClientError.h"
 
-const int MailioClient::smtpPort = 587;
-const std::string MailioClient::smtpAddress = "smtp.gmail.com";
-
 void MailioClient::sendEmail(const SendEmailPayload& payload) const
 {
     try
@@ -19,7 +16,7 @@ void MailioClient::sendEmail(const SendEmailPayload& payload) const
         message.subject(payload.title);
         message.content(payload.message);
 
-        mailio::smtps connection(smtpAddress, smtpPort);
+        mailio::smtps connection(payload.endpoint.address, payload.endpoint.port);
 
         connection.authenticate(payload.sender.address, payload.sender.password,
                                 mailio::smtps::auth_method_t::START_TLS);

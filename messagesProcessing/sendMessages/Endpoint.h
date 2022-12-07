@@ -1,8 +1,14 @@
-//
-// Created by wsekta on 04.12.22.
-//
+#pragma once
 
-#ifndef SCHEDULED_MESSENGER_ENDPOINT_H
-#define SCHEDULED_MESSENGER_ENDPOINT_H
+#include <string>
 
-#endif // SCHEDULED_MESSENGER_ENDPOINT_H
+struct Endpoint
+{
+    std::string address;
+    int port;
+};
+
+inline bool operator==(const Endpoint& lhs, const Endpoint& rhs)
+{
+    return (lhs.address == rhs.address) and (lhs.port == rhs.port);
+}

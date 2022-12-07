@@ -7,5 +7,5 @@
 class EventSenderMock : public EventSender
 {
 public:
-    MOCK_METHOD(void, sendDeleteRecordEvent, (SendEventPayload), (override));
+    MOCK_METHOD(void, sendEvent, (const SendEventPayload&), (override));
 };

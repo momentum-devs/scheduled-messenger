@@ -1,8 +1,10 @@
-//
-// Created by wsekta on 04.12.22.
-//
+#pragma once
 
-#ifndef SCHEDULED_MESSENGER_HOSTRESOLVER_H
-#define SCHEDULED_MESSENGER_HOSTRESOLVER_H
+#include "Endpoint.h"
 
-#endif // SCHEDULED_MESSENGER_HOSTRESOLVER_H
+class HostResolver
+{
+public:
+    virtual ~HostResolver() = default;
+    virtual Endpoint resolve(const std::string& emailAddress) = 0;
+};

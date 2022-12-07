@@ -5,5 +5,6 @@
 class EventSender
 {
 public:
-    virtual void sendDeleteRecordEvent(SendEventPayload payload) = 0;
+    virtual ~EventSender() = default;
+    virtual void sendEvent(const SendEventPayload& payload) = 0;
 };

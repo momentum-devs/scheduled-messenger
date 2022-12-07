@@ -1,8 +1,11 @@
-//
-// Created by wsekta on 04.12.22.
-//
+#pragma once
 
-#ifndef SCHEDULED_MESSENGER_HOSTRESOLVERMOCK_H
-#define SCHEDULED_MESSENGER_HOSTRESOLVERMOCK_H
+#include "gmock/gmock.h"
 
-#endif // SCHEDULED_MESSENGER_HOSTRESOLVERMOCK_H
+#include "HostResolver.h"
+
+class HostResolverMock : public HostResolver
+{
+public:
+    MOCK_METHOD(Endpoint, resolve, (const std::string&), (override));
+};

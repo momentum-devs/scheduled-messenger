@@ -6,7 +6,7 @@
 
 #include "exceptions/AwsEventSendError.h"
 
-void EventSenderImpl::sendDeleteRecordEvent(SendEventPayload payload)
+void EventSenderImpl::sendEvent(const SendEventPayload& payload)
 {
     Aws::CloudWatchEvents::CloudWatchEventsClient cwe;
 

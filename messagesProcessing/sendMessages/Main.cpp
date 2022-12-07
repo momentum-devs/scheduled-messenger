@@ -5,6 +5,7 @@
 #include "DatabaseConnector.h"
 #include "DateServiceImpl.h"
 #include "EventSenderImpl.h"
+#include "HostResolverImpl.h"
 #include "MailioClient.h"
 #include "MessageRepositoryImpl.h"
 #include "RepeatedByMapperImpl.h"
@@ -14,15 +15,14 @@ using namespace aws::lambda_runtime;
 
 invocation_response my_handler(invocation_request const&)
 {
-    std::unique_ptr<Config> config = std::make_unique<Config>(
-        DatabaseConfig{
-            std::getenv("DB_USERNAME"),
-            std::getenv("DB_PASSWORD"),
-            std::getenv("DB_HOST"),
-            std::getenv("DB_PORT"),
-            std::getenv("DB_NAME"),
-        },
-        std::getenv("EVENT_BUS_ARN"));
+    Config config{DatabaseConfig{
+                      std::getenv("DB_USERNAME"),
+                      std::getenv("DB_PASSWORD"),
+                      std::getenv("DB_HOST"),
+                      std::getenv("DB_PORT"),
+                      std::getenv("DB_NAME"),
+                  },
+                  std::getenv("EVENT_BUS_ARN"), std::getenv("TIME_WINDOW")};
 
     std::unique_ptr<DatabaseConnector> databaseConnector = std::make_unique<DatabaseConnector>(config);
     std::unique_ptr<EmailClient> emailClient = std::make_unique<MailioClient>();
@@ -31,12 +31,13 @@ invocation_response my_handler(invocation_request const&)
         std::make_unique<MessageRepositoryImpl>(std::move(databaseConnector), std::move(repeatedByMapper));
     std::unique_ptr<DateService> dateService = std::make_unique<DateServiceImpl>();
     std::unique_ptr<EventSender> eventSender = std::make_unique<EventSenderImpl>();
+    std::unique_ptr<HostResolver> hostResolver = std::make_unique<HostResolverImpl>();
 
-    eventSender->sendDeleteRecordEvent(
-        SendEventPayload{"123", "DeleteMessage", config->eventBusArn, "com.messages.delete"});
+    eventSender->sendEvent(SendEventPayload{"123", "DeleteMessage", config.eventBusArn, "com.messages.delete"});
 
-    SendMessagesCommandImpl sendMessagesCommand{std::move(emailClient), std::move(messageRepository),
-                                                std::move(dateService), std::move(eventSender), config};
+    SendMessagesCommandImpl sendMessagesCommand{std::move(emailClient),  std::move(messageRepository),
+                                                std::move(dateService),  std::move(eventSender),
+                                                std::move(hostResolver), config};
 
     sendMessagesCommand.execute();
 
