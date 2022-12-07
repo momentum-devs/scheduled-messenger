@@ -1,8 +1,12 @@
-//
-// Created by wsekta on 04.12.22.
-//
+#pragma once
 
-#ifndef SCHEDULED_MESSENGER_HOSTRESOLVEIMPL_H
-#define SCHEDULED_MESSENGER_HOSTRESOLVEIMPL_H
+#include "HostResolver.h"
 
-#endif // SCHEDULED_MESSENGER_HOSTRESOLVEIMPL_H
+class HostResolverImpl : public HostResolver
+{
+public:
+    Endpoint resolve(const std::string& emailAddress) override;
+
+private:
+    static const int defaultPort;
+};

@@ -5,13 +5,16 @@ set(SOURCES
         DatabaseConnector.cpp
         DateServiceImpl.cpp
         RepeatedByMapperImpl.cpp
+        HostResolverImpl.cpp
         )
 
 set(UT_SOURCES
         DateServiceImplTest.cpp
         SendMessagesCommandImplTest.cpp
+        HostResolverImplTest.cpp
         EmailClientMock.h
         MessageRepositoryMock.h
+        HostResolverMock.h
         )
 
 add_executable(send-messages-lambda-handler Main.cpp ${SOURCES})

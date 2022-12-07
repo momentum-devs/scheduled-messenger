@@ -20,7 +20,7 @@ std::vector<::Message> messages{message};
 std::vector<::Message> messagesNonRepeated{messageNonRepeated};
 EmailSender emailSender{message.user.emailAddress, message.displayName, message.user.emailPassword};
 EmailReceiver emailReceiver{message.recipient.emailAddress, message.recipient.name};
-SendEmailPayload emailPayload{emailSender, emailReceiver, message.title, message.text};
+SendEmailPayload emailPayload{emailSender, emailReceiver, message.title, message.text, {}};
 IsDateWithinRecurringTimePeriodPayload isDateWithinRecurringTimePeriodPayloadInit{message.sendDate, startDate,
                                                                                   message.repeatBy, 5};
 IsDateWithinRecurringTimePeriodPayload isDateWithinRecurringTimePeriodPayloadNonRecurringInit{

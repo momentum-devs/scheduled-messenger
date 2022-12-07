@@ -3,16 +3,16 @@
 #include <memory>
 #include <tao/pq.hpp>
 
-#include "DatabaseConfig.h"
+#include "Config.h"
 
 class DatabaseConnector
 {
 public:
-    explicit DatabaseConnector(const DatabaseConfig&);
+    explicit DatabaseConnector(const Config&);
 
     std::shared_ptr<tao::pq::connection> getConnection();
 
 private:
     std::shared_ptr<tao::pq::connection> connection;
-    const DatabaseConfig& config;
+    const Config& config;
 };
