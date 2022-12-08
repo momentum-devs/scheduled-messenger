@@ -10,8 +10,8 @@ Endpoint gmailEndpoint{"smtp.gmail.com", 587};
 std::string yahooEmailAddress{"email@yahoo.com"};
 Endpoint yahooEndpoint{"smtp.yahoo.com", 587};
 
-std::string protonEmailAddress{"email@gmail.com"};
-Endpoint protonEndpoint{"smtp.gmail.com", 587};
+std::string protonEmailAddress{"email@proton.me"};
+Endpoint protonEndpoint{"smtp.proton.me", 587};
 }
 
 class HostResolverTest : public testing::Test
