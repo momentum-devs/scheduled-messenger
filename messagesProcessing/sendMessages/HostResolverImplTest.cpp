@@ -8,10 +8,10 @@ std::string gmailEmailAddress{"email@gmail.com"};
 Endpoint gmailEndpoint{"smtp.gmail.com", 587};
 
 std::string yahooEmailAddress{"email@yahoo.com"};
-Endpoint yahooEndpoint{"smtp.yahoo.com", 587};
+Endpoint yahooEndpoint{"smtp.mail.yahoo.com", 587};
 
-std::string protonEmailAddress{"email@proton.me"};
-Endpoint protonEndpoint{"smtp.proton.me", 587};
+std::string outlookEmailAddress{"email@outlook.com"};
+Endpoint outlookEndpoint{"smtp-mail.outlook.com", 587};
 }
 
 class HostResolverTest : public testing::Test
@@ -34,9 +34,9 @@ TEST_F(HostResolverTest, resloveYahooHost)
     ASSERT_EQ(result, yahooEndpoint);
 }
 
-TEST_F(HostResolverTest, resloveProtonHost)
+TEST_F(HostResolverTest, resloveOutlookHost)
 {
-    auto result = hostResolver.resolve(protonEmailAddress);
+    auto result = hostResolver.resolve(outlookEmailAddress);
 
-    ASSERT_EQ(result, protonEndpoint);
+    ASSERT_EQ(result, outlookEndpoint);
 }
