@@ -42,7 +42,7 @@ export class MessagesProcessingStack extends core.Stack {
     });
 
     const eventRule = new events.Rule(this, 'scheduleRule', {
-      schedule: events.Schedule.cron({ minute: '*/5' }),
+      schedule: events.Schedule.cron({ minute: '*/2' }),
     });
 
     eventRule.addTarget(new targets.LambdaFunction(sendMessagesLambda));

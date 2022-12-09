@@ -8,11 +8,11 @@
 class DatabaseConnector
 {
 public:
-    explicit DatabaseConnector(const Config&);
+    explicit DatabaseConnector(const DatabaseConfig&);
 
     std::shared_ptr<tao::pq::connection> getConnection();
 
 private:
     std::shared_ptr<tao::pq::connection> connection;
-    const Config& config;
+    const DatabaseConfig& config;
 };

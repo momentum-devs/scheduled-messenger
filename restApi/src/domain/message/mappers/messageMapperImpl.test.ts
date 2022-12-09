@@ -22,11 +22,11 @@ describe('MessageMapperImpl', () => {
       id: messageEntity.id,
       title: messageEntity.title,
       content: messageEntity.content,
-      displayName: messageEntity.displayName,
-      sendDate: messageEntity.sendDate,
-      repeatBy: messageEntity.repeatBy,
-      recipientId: messageEntity.recipientId,
-      userId: messageEntity.userId,
+      displayName: messageEntity.display_name,
+      sendDate: messageEntity.send_date,
+      repeatBy: messageEntity.repeat_by,
+      recipientId: messageEntity.recipient_id,
+      userId: messageEntity.user_id,
     });
   });
 });

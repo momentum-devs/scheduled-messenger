@@ -6,6 +6,7 @@ set(SOURCES
         DateServiceImpl.cpp
         RepeatedByMapperImpl.cpp
         HostResolverImpl.cpp
+        EnvParser.cpp
         )
 
 set(UT_SOURCES
@@ -17,7 +18,7 @@ set(UT_SOURCES
         HostResolverMock.h
         )
 
-add_executable(send-messages-lambda-handler Main.cpp ${SOURCES} EnvParser.cpp)
+add_executable(send-messages-lambda-handler Main.cpp ${SOURCES})
 
 target_link_libraries(send-messages-lambda-handler PUBLIC mailio fmt taopq AWS::aws-lambda-runtime)
 

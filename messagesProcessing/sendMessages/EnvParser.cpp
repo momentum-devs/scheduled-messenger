@@ -7,7 +7,7 @@ std::string EnvParser::parseString(const std::string& envName)
 {
     auto envValue = std::getenv(envName.c_str());
 
-    if(!envValue)
+    if (!envValue)
     {
         throw EnvParseError(fmt::format("Error parsing env variable {}", envName));
     }
@@ -19,7 +19,7 @@ int EnvParser::parseInt(const std::string& envName)
 {
     auto envValue = std::getenv(envName.c_str());
 
-    if(!envValue)
+    if (!envValue)
     {
         throw EnvParseError(fmt::format("Error parsing env variable {}", envName));
     }

@@ -1,21 +1,22 @@
 #include "MessageRepositoryImpl.h"
 
 #include <fmt/core.h>
+#include <iostream>
 
 namespace
 {
 const auto messageId = "id";
 const auto messageTitle = "title";
 const auto messageContent = "content";
-const auto messageSendDate = "sendDate";
-const auto messageRepeatBy = "repeatBy";
+const auto messageSendDate = "send_date";
+const auto messageRepeatBy = "repeat_by";
 const auto userId = "user.id";
 const auto userEmail = "user.email";
 const auto userPassword = "password";
 const auto recipientId = "recipient.id";
 const auto recipientEmail = "recipient.email";
 const auto recipientName = "recipient.name";
-const auto displayName = "displayName";
+const auto displayName = "display_name";
 }
 
 MessageRepositoryImpl::MessageRepositoryImpl(std::unique_ptr<DatabaseConnector> databaseConnectorInit,
@@ -35,24 +36,28 @@ std::vector<Message> MessageRepositoryImpl::findMany()
                                         messages.id,
                                         messages.title,
                                         messages."content",
-                                        messages."type",
-                                        messages.sendDate,
-                                        messages.repeatBy,
-                                        messages.displayName as displayName,
+                                        messages."send_date",
+                                        messages."repeat_by",
+                                        messages."display_name",
                                         users."id" as "user.id",
                                         users."password",
                                         users.email as "user.email",
                                         recipients."id" as "recipient.id",
                                         recipients."name" as "recipient.name",
-                                        recipients.email as "recipient.email",
+                                        recipients.email as "recipient.email"
                                     FROM messages
-                                        JOIN users on (messages.userId = users.id)
-                                        JOIN recipients ON (messages.recipientId = recipients.id);)";
+                                        JOIN users ON (messages."user_id" = users.id)
+                                        JOIN recipients ON (messages."recipient_id" = recipients.id);)";
 
     const auto messagesRows = connection->execute(findManyMessagesQuery);
 
     for (const auto& messageRow : messagesRows)
     {
+        for (const auto& v : messageRow)
+        {
+            std::cout << v.name() << std::endl;
+        }
+
         User user{messageRow[userId].as<std::string>(), messageRow[userEmail].as<std::string>(),
                   messageRow[userPassword].as<std::string>()};
 

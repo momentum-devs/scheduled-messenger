@@ -1,4 +1,5 @@
 #include <aws/lambda-runtime/runtime.h>
+#include <iostream>
 
 #include "Config.h"
 #include "DatabaseConfig.h"
@@ -41,7 +42,7 @@ invocation_response my_handler(invocation_request const&)
         timeWindow,
         SmtpHostConfig{gmailSmtpHost, gmailSmtpPort, yahooSmtpHost, yahooSmtpPort, outlookSmtpHost, outlookSmtpPort}};
 
-    std::unique_ptr<DatabaseConnector> databaseConnector = std::make_unique<DatabaseConnector>(config);
+    std::unique_ptr<DatabaseConnector> databaseConnector = std::make_unique<DatabaseConnector>(config.databaseConfig);
     std::unique_ptr<EmailClient> emailClient = std::make_unique<MailioClient>();
     std::unique_ptr<RepeatedByMapper> repeatedByMapper = std::make_unique<RepeatedByMapperImpl>();
     std::unique_ptr<MessageRepository> messageRepository =

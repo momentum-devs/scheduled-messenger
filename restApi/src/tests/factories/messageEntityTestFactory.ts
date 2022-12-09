@@ -8,11 +8,11 @@ export class MessageEntityTestFactory {
       id: faker.datatype.uuid(),
       title: faker.lorem.word(),
       content: faker.lorem.words(),
-      displayName: faker.name.firstName(),
-      sendDate: faker.date.soon().toISOString(),
-      repeatBy: faker.helpers.arrayElement([RepeatBy.day, RepeatBy.month, RepeatBy.week, RepeatBy.year]),
-      recipientId: faker.datatype.uuid(),
-      userId: faker.datatype.uuid(),
+      display_name: faker.name.firstName(),
+      send_date: faker.date.soon().toISOString(),
+      repeat_by: faker.helpers.arrayElement([RepeatBy.day, RepeatBy.month, RepeatBy.week, RepeatBy.year]),
+      recipient_id: faker.datatype.uuid(),
+      user_id: faker.datatype.uuid(),
       ...input,
     };
   }
