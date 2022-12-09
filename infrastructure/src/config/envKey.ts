@@ -10,4 +10,11 @@ export enum EnvKey {
   jwtSecret = 'JWT_SECRET',
   jwtExpiresIn = 'JWT_EXPIRES_IN',
   hashSaltRounds = 'HASH_SALT_ROUNDS',
+  gmailSmtpHost = 'GMAIL_SMTP_HOST',
+  gmailSmtpPort = 'GMAIL_SMTP_PORT',
+  yahooSmtpHost = 'YAHOO_SMTP_HOST',
+  yahooSmtpPort = 'YAHOO_SMTP_PORT',
+  outlookSmtpHost = 'OUTLOOK_SMTP_HOST',
+  outlookSmtpPort = 'OUTLOOK_SMTP_PORT',
+  timeWindow = 'TIME_WINDOW',
 }

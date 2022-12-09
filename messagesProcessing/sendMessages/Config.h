@@ -6,6 +6,6 @@
 struct Config
 {
     DatabaseConfig databaseConfig;
-    std::string timeWindow;
+    int timeWindow;
     SmtpHostConfig smtpHostConfig;
 };

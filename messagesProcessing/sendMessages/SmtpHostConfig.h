@@ -5,9 +5,9 @@
 struct SmtpHostConfig
 {
     std::string gmailSmtpHost;
-    std::string gmailSmtpPort;
+    int gmailSmtpPort;
     std::string yahooSmtpHost;
-    std::string yahooSmtpPort;
+    int yahooSmtpPort;
     std::string outlookSmtpHost;
-    std::string outlookSmtpPort;
+    int outlookSmtpPort;
 };

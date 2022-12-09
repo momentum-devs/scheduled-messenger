@@ -17,7 +17,7 @@ set(UT_SOURCES
         HostResolverMock.h
         )
 
-add_executable(send-messages-lambda-handler Main.cpp ${SOURCES})
+add_executable(send-messages-lambda-handler Main.cpp ${SOURCES} EnvParser.cpp)
 
 target_link_libraries(send-messages-lambda-handler PUBLIC mailio fmt taopq AWS::aws-lambda-runtime)
 

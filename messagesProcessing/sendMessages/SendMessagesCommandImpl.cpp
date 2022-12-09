@@ -2,23 +2,19 @@
 
 #include <functional>
 #include <future>
-#include <sstream>
 
 #include "exceptions/EmailRequiredFieldsNotProvidedError.h"
 
 SendMessagesCommandImpl::SendMessagesCommandImpl(std::unique_ptr<EmailClient> emailClientInit,
                                                  std::unique_ptr<MessageRepository> messageRepositoryInit,
                                                  std::unique_ptr<DateService> dateServiceInit,
-                                                 std::unique_ptr<HostResolver> hostResolverInit,
-                                                 const Config& configInit)
+                                                 std::unique_ptr<HostResolver> hostResolverInit, int timeWindowInit)
     : emailClient{std::move(emailClientInit)},
       messageRepository{std::move(messageRepositoryInit)},
       dateService{std::move(dateServiceInit)},
       hostResolver{std::move(hostResolverInit)},
-      config{configInit}
+      timeWindow{timeWindowInit}
 {
-    std::stringstream ss{config.timeWindow};
-    ss >> timeWindow;
 }
 
 void SendMessagesCommandImpl::execute() const

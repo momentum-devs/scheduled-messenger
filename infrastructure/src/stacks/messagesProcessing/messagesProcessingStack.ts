@@ -24,6 +24,13 @@ export class MessagesProcessingStack extends core.Stack {
       [EnvKey.databaseUser]: appConfig.databaseUser,
       [EnvKey.databasePassword]: appConfig.databasePassword,
       [EnvKey.databasePort]: appConfig.databasePort,
+      [EnvKey.gmailSmtpHost]: appConfig.gmailSmtpHost,
+      [EnvKey.gmailSmtpPort]: appConfig.gmailSmtpPort,
+      [EnvKey.outlookSmtpHost]: appConfig.outlookSmtpHost,
+      [EnvKey.outlookSmtpPort]: appConfig.outlookSmtpPort,
+      [EnvKey.yahooSmtpHost]: appConfig.yahooSmtpHost,
+      [EnvKey.yahooSmtpPort]: appConfig.yahooSmtpPort,
+      [EnvKey.timeWindow]: appConfig.timeWindow,
     };
 
     const sendMessagesLambda = new lambda.Function(this, 'sendMessagesLambda', {
@@ -35,7 +42,7 @@ export class MessagesProcessingStack extends core.Stack {
     });
 
     const eventRule = new events.Rule(this, 'scheduleRule', {
-      schedule: events.Schedule.cron({ minute: '0/5' }),
+      schedule: events.Schedule.cron({ minute: '*/5' }),
     });
 
     eventRule.addTarget(new targets.LambdaFunction(sendMessagesLambda));

@@ -8,7 +8,8 @@
 class HostResolverImpl : public HostResolver
 {
 public:
-    HostResolverImpl(const Config&);
+    explicit HostResolverImpl(const SmtpHostConfig&);
+
     Endpoint resolve(const std::string& emailAddress) override;
 
 private:

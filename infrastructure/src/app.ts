@@ -16,9 +16,43 @@ const jwtSecret = process.env[EnvKey.jwtSecret];
 const jwtExpiresIn = process.env[EnvKey.jwtExpiresIn];
 const hashSaltRounds = process.env[EnvKey.hashSaltRounds];
 
-console.log({ awsRegion, awsAccount, jwtSecret, jwtExpiresIn, hashSaltRounds });
+const gmailSmtpHost = process.env[EnvKey.gmailSmtpHost];
+const gmailSmtpPort = process.env[EnvKey.gmailSmtpPort];
+const yahooSmtpHost = process.env[EnvKey.yahooSmtpHost];
+const yahooSmtpPort = process.env[EnvKey.yahooSmtpPort];
+const outlookSmtpHost = process.env[EnvKey.outlookSmtpHost];
+const outlookSmtpPort = process.env[EnvKey.outlookSmtpPort];
+const timeWindow = process.env[EnvKey.timeWindow];
 
-if (!awsRegion || !awsAccount || !jwtSecret || !jwtExpiresIn || !hashSaltRounds) {
+console.log({
+  awsRegion,
+  awsAccount,
+  jwtSecret,
+  jwtExpiresIn,
+  hashSaltRounds,
+  gmailSmtpHost,
+  gmailSmtpPort,
+  yahooSmtpHost,
+  yahooSmtpPort,
+  outlookSmtpHost,
+  outlookSmtpPort,
+  timeWindow,
+});
+
+if (
+  !awsRegion ||
+  !awsAccount ||
+  !jwtSecret ||
+  !jwtExpiresIn ||
+  !hashSaltRounds ||
+  !gmailSmtpHost ||
+  !gmailSmtpPort ||
+  !yahooSmtpHost ||
+  !yahooSmtpPort ||
+  !outlookSmtpHost ||
+  !outlookSmtpPort ||
+  !timeWindow
+) {
   throw new Error('Missing environment variables');
 }
 
@@ -51,6 +85,13 @@ const appConfig: AppConfig = {
   jwtSecret,
   jwtExpiresIn,
   hashSaltRounds,
+  gmailSmtpHost,
+  gmailSmtpPort,
+  yahooSmtpHost,
+  yahooSmtpPort,
+  outlookSmtpHost,
+  outlookSmtpPort,
+  timeWindow,
 };
 
 new MessagesProcessingStack(app, 'MessagesProcessing', { env, appConfig });
