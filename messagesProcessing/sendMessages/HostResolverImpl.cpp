@@ -3,18 +3,26 @@
 #include <boost/algorithm/string.hpp>
 #include <vector>
 
-const int HostResolverImpl::defaultPort = 587;
-
-namespace
+HostResolverImpl::HostResolverImpl(const Config& config)
 {
-std::unordered_map<std::string, std::string> smtpHostMapping{
-    {"gmail.com", "smtp.gmail.com"}, {"yahoo.com", "smtp.mail.yahoo.com"}, {"outlook.com", "smtp-mail.outlook.com"}};
+    const auto& hostConfig = config.smtpHostConfig;
+    int gmailPort;
+    int yahooPort;
+    int outlookPort;
+    std::stringstream{hostConfig.gmailSmtpPort} >> gmailPort;
+    std::stringstream{hostConfig.yahooSmtpPort} >> yahooPort;
+    std::stringstream{hostConfig.outlookSmtpPort} >> outlookPort;
+    smtpHostMapping = {
+        {"gmail.com", {hostConfig.gmailSmtpHost, gmailPort}},
+        {"yahoo.com", {hostConfig.yahooSmtpHost, yahooPort}},
+        {"outlook.com", {hostConfig.outlookSmtpHost, outlookPort}},
+    };
 }
 
 Endpoint HostResolverImpl::resolve(const std::string& emailAddress)
 {
     std::vector<std::string> splitEmailAddress;
     boost::split(splitEmailAddress, emailAddress, boost::is_any_of("@"));
-    auto smtpHost = smtpHostMapping[splitEmailAddress[1]];
-    return {smtpHost, defaultPort};
+    auto endpoint = smtpHostMapping[splitEmailAddress[1]];
+    return endpoint;
 }

@@ -21,7 +21,10 @@ invocation_response my_handler(invocation_request const&)
                       std::getenv("DB_PORT"),
                       std::getenv("DB_NAME"),
                   },
-                  std::getenv("TIME_WINDOW")};
+                  std::getenv("TIME_WINDOW"),
+                  SmtpHostConfig{std::getenv("GMAIL_SMTP_HOST"), std::getenv("GMAIL_SMTP_PORT"),
+                                 std::getenv("YAHOO_SMTP_HOST"), std::getenv("YAHOO_SMTP_PORT"),
+                                 std::getenv("OUTLOOK_SMTP_HOST"), std::getenv("OUTLOOK_SMTP_PORT")}};
 
     std::unique_ptr<DatabaseConnector> databaseConnector = std::make_unique<DatabaseConnector>(config);
     std::unique_ptr<EmailClient> emailClient = std::make_unique<MailioClient>();
@@ -31,9 +34,8 @@ invocation_response my_handler(invocation_request const&)
     std::unique_ptr<DateService> dateService = std::make_unique<DateServiceImpl>();
     std::unique_ptr<HostResolver> hostResolver = std::make_unique<HostResolverImpl>();
 
-    SendMessagesCommandImpl sendMessagesCommand{std::move(emailClient),  std::move(messageRepository),
-                                                std::move(dateService),
-                                                std::move(hostResolver), config};
+    SendMessagesCommandImpl sendMessagesCommand{std::move(emailClient), std::move(messageRepository),
+                                                std::move(dateService), std::move(hostResolver), config};
 
     sendMessagesCommand.execute();
 
