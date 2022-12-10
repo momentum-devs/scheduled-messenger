@@ -11,7 +11,7 @@ export class FindMessagesQueryImpl implements FindMessagesQuery {
 
     console.log('Fetching messages...', { userId });
 
-    const messages = await this.messageRepository.findMany({ userId });
+    const messages = await this.messageRepository.findMany({ user_id: userId });
 
     console.log('Messages fetched.', { userId });
 

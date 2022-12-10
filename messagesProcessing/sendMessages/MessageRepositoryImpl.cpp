@@ -1,7 +1,6 @@
 #include "MessageRepositoryImpl.h"
 
 #include <fmt/core.h>
-#include <iostream>
 
 namespace
 {
@@ -53,11 +52,6 @@ std::vector<Message> MessageRepositoryImpl::findMany()
 
     for (const auto& messageRow : messagesRows)
     {
-        for (const auto& v : messageRow)
-        {
-            std::cout << v.name() << std::endl;
-        }
-
         User user{messageRow[userId].as<std::string>(), messageRow[userEmail].as<std::string>(),
                   messageRow[userPassword].as<std::string>()};
 

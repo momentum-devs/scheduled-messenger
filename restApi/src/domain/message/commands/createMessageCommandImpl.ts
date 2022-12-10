@@ -19,12 +19,12 @@ export class CreateMessageCommandImpl implements CreateMessageCommand {
     const message = await this.messageRepository.createOne({
       id: uuidv4(),
       content,
-      displayName,
-      recipientId,
-      sendDate,
+      display_name: displayName,
+      recipient_id: recipientId,
+      send_date: sendDate,
       title,
-      userId,
-      repeatBy,
+      user_id: userId,
+      repeat_by: repeatBy,
     });
 
     console.log('Message created.', { messageId: message.id, userId });

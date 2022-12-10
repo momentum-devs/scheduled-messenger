@@ -29,7 +29,7 @@ describe('FindMessagesQueryImpl', () => {
 
     const result = await findMessagesQueryImpl.findMessages({ userId: message.userId });
 
-    expect(messageRepository.findMany).toHaveBeenCalledWith({ userId: message.userId });
+    expect(messageRepository.findMany).toHaveBeenCalledWith({ user_id: message.userId });
     expect(result.messages).toEqual([message]);
   });
 });

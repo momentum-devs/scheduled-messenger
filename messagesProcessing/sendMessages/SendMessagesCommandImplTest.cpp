@@ -17,7 +17,7 @@ const auto messageId1 = "id1";
 const auto messageId2 = "id1";
 ::Message message{messageId1, "text", "title", "sendDate", RepeatedBy::DAY, "displayName", {}, {}};
 ::Message messageNonRepeated{messageId2, "text", "title", "sendDate", RepeatedBy::NONE, "displayName", {}, {}};
-Config config{{"username", "password", "host", "port", "databaseName"}, "5"};
+Config config{{"username", "password", "host", "port", "databaseName"}, 5};
 std::vector<::Message> messages{message};
 std::vector<::Message> messagesNonRepeated{messageNonRepeated};
 EmailSender emailSender{message.user.emailAddress, message.displayName, message.user.emailPassword};
@@ -47,7 +47,8 @@ public:
     HostResolverMock* hostResolver{hostResolverInit.get()};
 
     SendMessagesCommandImpl sendMessagesCommand{std::move(emailClientInit), std::move(messageRepositoryInit),
-                                                std::move(dateServiceInit), std::move(hostResolverInit), config};
+                                                std::move(dateServiceInit), std::move(hostResolverInit),
+                                                config.timeWindow};
 };
 
 TEST_F(SendMessagesCommandImplTest, executeCommand)

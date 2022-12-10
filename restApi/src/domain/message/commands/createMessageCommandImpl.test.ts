@@ -42,12 +42,12 @@ describe('CreateMessageCommandImpl', () => {
     expect(messageRepository.createOne).toHaveBeenCalledWith({
       id: expect.anything(),
       content,
-      displayName,
-      recipientId,
-      sendDate,
+      display_name: displayName,
+      recipient_id: recipientId,
+      send_date: sendDate,
       title,
-      userId,
-      repeatBy,
+      user_id: userId,
+      repeat_by: repeatBy,
     });
     expect(result.message).toEqual(message);
   });

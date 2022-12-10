@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <future>
+#include <iostream>
 
 #include "exceptions/EmailRequiredFieldsNotProvidedError.h"
 
@@ -35,7 +36,9 @@ void SendMessagesCommandImpl::execute() const
     for (auto i = 0l; i < numberOfThreads; ++i)
     {
         auto lowerLimit = i * messages.size() / numberOfThreads;
+
         auto upperLimit = (i + 1) * messages.size() / numberOfThreads;
+
         auto count = upperLimit - lowerLimit;
 
         auto messageSpan = std::span{messages}.subspan(lowerLimit, count);
@@ -54,6 +57,7 @@ void SendMessagesCommandImpl::sendMessagesBatch(std::span<const Message> message
 {
     for (const auto& message : messagesBatch)
     {
+        std::cout << startDate << "\t" << message.sendDate << '\t' << timeWindow << std::endl;
         if (!dateService->isDateWithinRecurringTimePeriod({message.sendDate, startDate, message.repeatBy, timeWindow}))
         {
             continue;
@@ -66,7 +70,16 @@ void SendMessagesCommandImpl::sendMessagesBatch(std::span<const Message> message
         SendEmailPayload emailPayload{emailSender, emailReceiver, message.title, message.text,
                                       hostResolver->resolve(message.user.emailAddress)};
 
-        emailClient->sendEmail(emailPayload);
+        try
+        {
+            emailClient->sendEmail(emailPayload);
+        }
+        catch (const std::runtime_error& error)
+        {
+            std::cerr << error.what() << std::endl;
+            
+            continue;
+        }
 
         if (message.repeatBy == RepeatedBy::NONE)
         {

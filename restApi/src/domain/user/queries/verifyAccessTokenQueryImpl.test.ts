@@ -32,7 +32,7 @@ describe('VerifyAccessTokenQueryImpl', () => {
 
     const result = await verifyAccessTokenQueryImpl.verifyAccessToken({ accessToken });
 
-    expect(tokenService.verifyAccessToken).toHaveBeenCalledWith({ accessToken });
+    expect(tokenService.verifyAccessToken).toHaveBeenCalledWith(accessToken);
     expect(result.userId).toEqual(user.id);
   });
 

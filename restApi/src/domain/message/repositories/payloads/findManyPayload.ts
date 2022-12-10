@@ -2,17 +2,17 @@ import { IsOptional, IsString } from '../../../../common/validator/decorators.js
 import { Validator } from '../../../../common/validator/validator.js';
 
 export interface FindManyPayloadInput {
-  readonly userId?: string | undefined;
+  readonly user_id?: string | undefined;
 }
 
 export class FindManyPayload {
   @IsOptional()
   @IsString()
-  public readonly userId?: string;
+  public readonly user_id?: string;
 
-  private constructor({ userId }: FindManyPayloadInput) {
-    if (userId) {
-      this.userId = userId;
+  private constructor({ user_id }: FindManyPayloadInput) {
+    if (user_id) {
+      this.user_id = user_id;
     }
 
     Validator.validate(this);

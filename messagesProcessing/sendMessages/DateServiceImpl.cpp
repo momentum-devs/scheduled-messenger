@@ -18,7 +18,9 @@ bool DateServiceImpl::isDateWithinRecurringTimePeriod(const IsDateWithinRecurrin
 
     if (hour == 23 && minute + payload.timeWindow > 60)
     {
-        boost::gregorian::date date{year, month, day};
+        boost::gregorian::date date{static_cast<boost::gregorian::date::year_type>(year),
+                                    static_cast<boost::gregorian::date::month_type>(month),
+                                    static_cast<boost::gregorian::date::day_type>(day)};
 
         date += boost::gregorian::days{1};
 
@@ -49,8 +51,13 @@ bool DateServiceImpl::isDateWithinRecurringTimePeriod(const IsDateWithinRecurrin
 
     if (payload.repeatedBy == RepeatedBy::WEEK)
     {
-        boost::gregorian::date startDate{startYear, startMonth, startDay};
-        boost::gregorian::date date{year, month, day};
+        boost::gregorian::date startDate{static_cast<boost::gregorian::date::year_type>(startYear),
+                                         static_cast<boost::gregorian::date::month_type>(startMonth),
+                                         static_cast<boost::gregorian::date::day_type>(startDay)};
+        
+        boost::gregorian::date date{static_cast<boost::gregorian::date::year_type>(year),
+                                    static_cast<boost::gregorian::date::month_type>(month),
+                                    static_cast<boost::gregorian::date::day_type>(day)};
 
         return startDate.day_of_week() == date.day_of_week();
     }
@@ -75,6 +82,7 @@ DateTime DateServiceImpl::convertDateStringToDateTime(std::string date) const
 bool DateServiceImpl::isTimeFromTimeWindow(const Time& time, const Time& startTime, int timeWindow) const
 {
     auto [hour, minute] = time;
+
     auto [startHour, startMinute] = startTime;
 
     if (startHour == hour and minute > startMinute - timeWindow and startMinute <= minute)
@@ -83,7 +91,9 @@ bool DateServiceImpl::isTimeFromTimeWindow(const Time& time, const Time& startTi
     }
 
     bool areHoursDifferentByOne = startHour - 1 == hour;
+
     bool areHoursDifferentByOneAndDateChange = startHour == 0 && hour == 23;
+
     if ((areHoursDifferentByOne or areHoursDifferentByOneAndDateChange) and minute - startMinute > 60 - timeWindow and
         minute - startMinute <= 60)
     {
@@ -95,7 +105,7 @@ bool DateServiceImpl::isTimeFromTimeWindow(const Time& time, const Time& startTi
 
 std::string DateServiceImpl::getCurrentDate() const
 {
-    boost::posix_time::ptime timeLocal = boost::posix_time::second_clock::local_time();
+    boost::posix_time::ptime timeLocal = boost::posix_time::second_clock::universal_time();
 
     return fmt::format("{}-{}-{} {}:{}", timeLocal.date().year(), timeLocal.date().month(), timeLocal.date().day(),
                        timeLocal.time_of_day().hours(), timeLocal.time_of_day().minutes());

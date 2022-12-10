@@ -13,7 +13,7 @@ Endpoint yahooEndpoint{"smtp.mail.yahoo.com", 587};
 std::string outlookEmailAddress{"email@outlook.com"};
 Endpoint outlookEndpoint{"smtp-mail.outlook.com", 587};
 
-SmtpHostConfig config{gmailEndpoint.address, "587", yahooEndpoint.address, "587", outlookEndpoint.address, "587"};
+SmtpHostConfig config{gmailEndpoint.address, 587, yahooEndpoint.address, 587, outlookEndpoint.address, 587};
 }
 
 class HostResolverTest : public testing::Test

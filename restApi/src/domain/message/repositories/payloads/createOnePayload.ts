@@ -6,11 +6,11 @@ export interface CreateOnePayloadInput {
   readonly id: string;
   readonly title: string;
   readonly content: string;
-  readonly displayName: string;
-  readonly sendDate: string;
-  readonly repeatBy?: RepeatBy | undefined;
-  readonly userId: string;
-  readonly recipientId: string;
+  readonly display_name: string;
+  readonly send_date: string;
+  readonly repeat_by?: RepeatBy | undefined;
+  readonly user_id: string;
+  readonly recipient_id: string;
 }
 
 export class CreateOnePayload {
@@ -24,41 +24,41 @@ export class CreateOnePayload {
   public readonly content: string;
 
   @IsString()
-  public readonly displayName: string;
+  public readonly display_name: string;
 
   @IsString()
-  public readonly sendDate: string;
+  public readonly send_date: string;
 
   @IsOptional()
   @IsEnum(RepeatBy)
-  public readonly repeatBy?: RepeatBy;
+  public readonly repeat_by?: RepeatBy;
 
   @IsUuidV4()
-  public readonly userId: string;
+  public readonly user_id: string;
 
   @IsUuidV4()
-  public readonly recipientId: string;
+  public readonly recipient_id: string;
 
   private constructor({
     id,
     title,
     content,
-    displayName,
-    sendDate,
-    repeatBy,
-    userId,
-    recipientId,
+    display_name,
+    send_date,
+    repeat_by,
+    user_id,
+    recipient_id,
   }: CreateOnePayloadInput) {
     this.id = id;
     this.title = title;
     this.content = content;
-    this.displayName = displayName;
-    this.sendDate = sendDate;
-    this.userId = userId;
-    this.recipientId = recipientId;
+    this.display_name = display_name;
+    this.send_date = send_date;
+    this.user_id = user_id;
+    this.recipient_id = recipient_id;
 
-    if (repeatBy) {
-      this.repeatBy = repeatBy;
+    if (repeat_by) {
+      this.repeat_by = repeat_by;
     }
 
     Validator.validate(this);

@@ -22,12 +22,12 @@ export class MessageRepositoryImpl implements MessageRepository {
   }
 
   public async findMany(input: FindManyPayloadInput): Promise<Message[]> {
-    const { userId } = FindManyPayload.create(input);
+    const { user_id } = FindManyPayload.create(input);
 
     let query = this.queryBuilder<MessageEntity>(this.messagesTableName).select('*');
 
-    if (userId) {
-      query = query.where('userId', '=', userId);
+    if (user_id) {
+      query = query.where('user_id', '=', user_id);
     }
 
     const messageEntities = await query;

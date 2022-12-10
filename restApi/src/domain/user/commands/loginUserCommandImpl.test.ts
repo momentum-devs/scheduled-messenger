@@ -50,7 +50,7 @@ describe('LoginUserCommandImpl', () => {
 
     expect(userRepository.findOne).toHaveBeenCalledWith({ email });
     expect(hashService.comparePasswords).toHaveBeenCalledWith(password, password);
-    expect(tokenService.signAccessToken).toHaveBeenCalledWith({ id });
+    expect(tokenService.signAccessToken).toHaveBeenCalledWith({ userId: id });
     expect(result.accessToken).toEqual(accessToken);
   });
 
