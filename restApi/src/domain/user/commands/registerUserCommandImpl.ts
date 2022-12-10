@@ -9,7 +9,7 @@ export class RegisterUserCommandImpl implements RegisterUserCommand {
   public constructor(private readonly hashService: HashService, private readonly userRepository: UserRepository) {}
 
   public async registerUser(input: RegisterUserCommandPayload): Promise<void> {
-    const { email, password } = RegisterUserCommandPayload.create(input);
+    const { email, emailPassword, password } = RegisterUserCommandPayload.create(input);
 
     console.log('Creating user...', { email });
 
@@ -24,6 +24,7 @@ export class RegisterUserCommandImpl implements RegisterUserCommand {
     await this.userRepository.createOne({
       id: uuidv4(),
       email,
+      email_password: emailPassword,
       password: hashedPassword,
     });
 

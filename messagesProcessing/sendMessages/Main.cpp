@@ -1,5 +1,4 @@
 #include <aws/lambda-runtime/runtime.h>
-#include <iostream>
 
 #include "Config.h"
 #include "DatabaseConfig.h"

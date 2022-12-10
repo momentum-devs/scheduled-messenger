@@ -29,7 +29,7 @@ describe('RegisterUserCommandImpl', () => {
 
     const { password: hashedPassword } = userTestFactory.create();
 
-    const { email, password } = user;
+    const { email, emailPassword, password } = user;
 
     spyFactory.create(userRepository, 'findOne').mockImplementation(async () => {
       return null;
@@ -41,10 +41,15 @@ describe('RegisterUserCommandImpl', () => {
 
     spyFactory.create(userRepository, 'createOne').mockImplementation(async () => {});
 
-    await registerUserCommandImpl.registerUser({ email, password });
+    await registerUserCommandImpl.registerUser({ email, emailPassword, password });
 
     expect(userRepository.findOne).toHaveBeenCalledWith({ email });
-    expect(userRepository.createOne).toHaveBeenCalledWith({ id: expect.anything(), email, password: hashedPassword });
+    expect(userRepository.createOne).toHaveBeenCalledWith({
+      id: expect.anything(),
+      email,
+      email_password: emailPassword,
+      password: hashedPassword,
+    });
   });
 
   it('throws when user already exists', async () => {
@@ -52,14 +57,14 @@ describe('RegisterUserCommandImpl', () => {
 
     const user = userTestFactory.create();
 
-    const { email, password } = user;
+    const { email, emailPassword, password } = user;
 
     spyFactory.create(userRepository, 'findOne').mockImplementation(async () => {
       return user;
     });
 
     try {
-      await registerUserCommandImpl.registerUser({ email, password });
+      await registerUserCommandImpl.registerUser({ email, emailPassword, password });
     } catch (error) {
       expect(error).toBeInstanceOf(UserAlreadyExistsError);
     }

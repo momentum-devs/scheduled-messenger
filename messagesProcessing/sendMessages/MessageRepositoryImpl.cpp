@@ -11,7 +11,7 @@ const auto messageSendDate = "send_date";
 const auto messageRepeatBy = "repeat_by";
 const auto userId = "user.id";
 const auto userEmail = "user.email";
-const auto userPassword = "password";
+const auto userPassword = "email_password";
 const auto recipientId = "recipient.id";
 const auto recipientEmail = "recipient.email";
 const auto recipientName = "recipient.name";
@@ -39,7 +39,7 @@ std::vector<Message> MessageRepositoryImpl::findMany()
                                         messages."repeat_by",
                                         messages."display_name",
                                         users."id" as "user.id",
-                                        users."password",
+                                        users."email_password",
                                         users.email as "user.email",
                                         recipients."id" as "recipient.id",
                                         recipients."name" as "recipient.name",

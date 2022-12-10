@@ -18,6 +18,11 @@ describe('UserMapperImpl', () => {
 
     const result = userMapperImpl.map(userEntity);
 
-    expect(result).toEqual({ id: userEntity.id, email: userEntity.email, password: userEntity.password });
+    expect(result).toEqual({
+      id: userEntity.id,
+      email: userEntity.email,
+      emailPassword: userEntity.email_password,
+      password: userEntity.password,
+    });
   });
 });

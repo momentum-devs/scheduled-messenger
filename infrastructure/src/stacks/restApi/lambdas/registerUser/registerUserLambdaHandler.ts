@@ -30,9 +30,9 @@ const hashService = new HashServiceImpl(hashSaltRounds);
 const registerUserCommand = new RegisterUserCommandImpl(hashService, userRepository);
 
 export const lambda: Handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-  const { email, password } = JSON.parse(event.body as string);
+  const { email, emailPassword, password } = JSON.parse(event.body as string);
 
-  await registerUserCommand.registerUser({ email, password });
+  await registerUserCommand.registerUser({ email, emailPassword, password });
 
   return {
     statusCode: 201,

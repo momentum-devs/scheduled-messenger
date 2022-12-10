@@ -9,11 +9,15 @@ export class User {
   public readonly email: string;
 
   @IsString()
+  public readonly emailPassword: string;
+
+  @IsString()
   public readonly password: string;
 
-  public constructor({ id, email, password }: User) {
+  public constructor({ id, email, emailPassword, password }: User) {
     this.id = id;
     this.email = email;
+    this.emailPassword = emailPassword;
     this.password = password;
 
     Validator.validate(this);

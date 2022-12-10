@@ -6,6 +6,7 @@ export class UserTestFactory {
     return new User({
       id: faker.datatype.uuid(),
       email: faker.internet.email(),
+      emailPassword: faker.internet.password(),
       password: faker.internet.password(),
       ...input,
     });

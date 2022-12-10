@@ -6,10 +6,14 @@ export class RegisterUserCommandPayload {
   public readonly email: string;
 
   @IsString()
+  public readonly emailPassword: string;
+
+  @IsString()
   public readonly password: string;
 
-  private constructor({ email, password }: RegisterUserCommandPayload) {
+  private constructor({ email, emailPassword, password }: RegisterUserCommandPayload) {
     this.email = email;
+    this.emailPassword = emailPassword;
     this.password = password;
 
     Validator.validate(this);

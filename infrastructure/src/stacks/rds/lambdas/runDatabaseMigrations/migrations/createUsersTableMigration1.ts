@@ -9,6 +9,7 @@ export class CreateUsersTableMigration1 implements Migration {
     await schema.createTable('users', (table) => {
       table.text('id');
       table.text('email').notNullable();
+      table.text('email_password').notNullable();
       table.text('password').notNullable();
 
       table.primary(['id']);

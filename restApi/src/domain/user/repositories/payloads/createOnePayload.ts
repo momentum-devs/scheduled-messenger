@@ -9,11 +9,15 @@ export class CreateOnePayload {
   public readonly email: string;
 
   @IsString()
+  public readonly email_password: string;
+
+  @IsString()
   public readonly password: string;
 
-  private constructor({ id, email, password }: CreateOnePayload) {
+  private constructor({ id, email, email_password, password }: CreateOnePayload) {
     this.id = id;
     this.email = email;
+    this.email_password = email_password;
     this.password = password;
 
     Validator.validate(this);
