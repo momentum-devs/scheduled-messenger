@@ -46,6 +46,12 @@ export class RestApiStack extends core.Stack {
       timeout: core.Duration.minutes(3),
     });
 
+    const deleteMessageLambda = new LambdaFunction(this, 'deleteMessageLambda', {
+      entry: lambdaPathFactory.create('deleteMessage/deleteMessageLambdaHandler.ts'),
+      environment: lambdaEnvironment,
+      timeout: core.Duration.minutes(3),
+    });
+
     const getMessagesLambda = new LambdaFunction(this, 'getMessagesLambda', {
       entry: lambdaPathFactory.create('getMessages/getMessagesLambdaHandler.ts'),
       environment: lambdaEnvironment,
@@ -80,6 +86,10 @@ export class RestApiStack extends core.Stack {
     messagesResource.addMethod('POST', new LambdaIntegration(createMessageLambda));
 
     messagesResource.addMethod('GET', new LambdaIntegration(getMessagesLambda));
+
+    const messageResource = messagesResource.addResource('{messageId}');
+
+    messageResource.addMethod('DELETE', new LambdaIntegration(deleteMessageLambda));
 
     const recipientsResource = restApi.root.addResource('recipients');
 

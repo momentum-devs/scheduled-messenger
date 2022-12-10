@@ -5,8 +5,12 @@ export class DeleteMessageCommandPayload {
   @IsUuidV4()
   public readonly id: string;
 
-  private constructor({ id }: DeleteMessageCommandPayload) {
+  @IsUuidV4()
+  public readonly userId: string;
+
+  private constructor({ id, userId }: DeleteMessageCommandPayload) {
     this.id = id;
+    this.userId = userId;
 
     Validator.validate(this);
   }

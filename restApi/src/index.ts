@@ -23,6 +23,8 @@ export * from './domain/message/queries/findMessagesQueryImpl.js';
 export * from './domain/message/commands/createMessageCommand.js';
 export * from './domain/message/commands/createMessageCommandImpl.js';
 export * from './domain/message/repeatBy.js';
+export * from './domain/message/commands/deleteMessageCommand.js';
+export * from './domain/message/commands/deleteMessageCommandImpl.js';
 
 export * from './domain/recipient/repositories/recipientRepository.js';
 export * from './domain/recipient/repositories/recipientRepositoryImpl.js';

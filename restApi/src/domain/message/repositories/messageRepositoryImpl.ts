@@ -37,8 +37,11 @@ export class MessageRepositoryImpl implements MessageRepository {
   }
 
   public async deleteOne(input: DeleteOnePayload): Promise<void> {
-    const { id } = DeleteOnePayload.create(input);
+    const { id, user_id } = DeleteOnePayload.create(input);
 
-    await this.queryBuilder<MessageEntity>(this.messagesTableName).where('id', '=', id).del();
+    await this.queryBuilder<MessageEntity>(this.messagesTableName)
+      .where('id', '=', id)
+      .andWhere('user_id', '=', user_id)
+      .del();
   }
 }

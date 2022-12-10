@@ -21,12 +21,12 @@ describe('DeleteMessageCommandImpl', () => {
   it('deletes a message', async () => {
     expect.assertions(1);
 
-    const { id } = messageTestFactory.create();
+    const { id, userId } = messageTestFactory.create();
 
     spyFactory.create(messageRepository, 'deleteOne').mockImplementation(async () => {});
 
-    await deleteMessageCommandImpl.deleteMessage({ id });
+    await deleteMessageCommandImpl.deleteMessage({ id, userId });
 
-    expect(messageRepository.createOne).toHaveBeenCalledWith({ id });
+    expect(messageRepository.createOne).toHaveBeenCalledWith({ id, user_id: userId });
   });
 });

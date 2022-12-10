@@ -5,8 +5,12 @@ export class DeleteOnePayload {
   @IsString()
   public readonly id: string;
 
-  private constructor({ id }: DeleteOnePayload) {
+  @IsString()
+  public readonly user_id: string;
+
+  private constructor({ id, user_id }: DeleteOnePayload) {
     this.id = id;
+    this.user_id = user_id;
 
     Validator.validate(this);
   }
