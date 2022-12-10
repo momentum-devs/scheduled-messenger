@@ -13,8 +13,11 @@ bool DateServiceImpl::isDateWithinRecurringTimePeriod(const IsDateWithinRecurrin
 
     if (!isTimeFromTimeWindow({hour, minute}, {startHour, startMinute}, payload.timeWindow))
     {
+        std::cout << "date:" << payload.date << " not in time window" << std::endl;
         return false;
     }
+
+    std::cout << "date:" << payload.date << " in time window" << std::endl;
 
     if (hour == 23 && minute + payload.timeWindow > 60)
     {
@@ -54,7 +57,7 @@ bool DateServiceImpl::isDateWithinRecurringTimePeriod(const IsDateWithinRecurrin
         boost::gregorian::date startDate{static_cast<boost::gregorian::date::year_type>(startYear),
                                          static_cast<boost::gregorian::date::month_type>(startMonth),
                                          static_cast<boost::gregorian::date::day_type>(startDay)};
-        
+
         boost::gregorian::date date{static_cast<boost::gregorian::date::year_type>(year),
                                     static_cast<boost::gregorian::date::month_type>(month),
                                     static_cast<boost::gregorian::date::day_type>(day)};
@@ -81,6 +84,7 @@ DateTime DateServiceImpl::convertDateStringToDateTime(std::string date) const
 
 bool DateServiceImpl::isTimeFromTimeWindow(const Time& time, const Time& startTime, int timeWindow) const
 {
+    std::cout <<
     auto [hour, minute] = time;
 
     auto [startHour, startMinute] = startTime;

@@ -3,20 +3,9 @@
 #include <string>
 #include <tuple>
 
+#include "EmailReceiver.h"
+#include "EmailSender.h"
 #include "Endpoint.h"
-
-struct EmailSender
-{
-    std::string address;
-    std::string name;
-    std::string password;
-};
-
-struct EmailReceiver
-{
-    std::string address;
-    std::string name;
-};
 
 struct SendEmailPayload
 {
@@ -27,12 +16,16 @@ struct SendEmailPayload
     Endpoint endpoint;
 };
 
+inline std::ostream& operator<<(std::ostream& os, const SendEmailPayload& sendEmailPayload)
+{
+    return os << "sender: {" << sendEmailPayload.sender << "} receiver: {" << sendEmailPayload.receiver
+              << "} title: " << sendEmailPayload.title << " message: " << sendEmailPayload.message
+              << " endpoint: " << sendEmailPayload.endpoint;
+}
+
 inline bool operator==(const SendEmailPayload& lhs, const SendEmailPayload& rhs)
 {
     auto tieStruct = [](const SendEmailPayload& payload)
-    {
-        return std::tie(payload.title, payload.message, payload.sender.address, payload.sender.name,
-                        payload.sender.password, payload.receiver.address, payload.receiver.name, payload.endpoint);
-    };
+    { return std::tie(payload.title, payload.message, payload.sender, payload.receiver, payload.endpoint); };
     return tieStruct(lhs) == tieStruct(rhs);
 }

@@ -57,18 +57,27 @@ void SendMessagesCommandImpl::sendMessagesBatch(std::span<const Message> message
 {
     for (const auto& message : messagesBatch)
     {
-        std::cout << startDate << "\t" << message.sendDate << '\t' << timeWindow << std::endl;
+        std::cout << "start: " << startDate << " messageDate: " << message.sendDate << " timeWindow: " << timeWindow
+                  << std::endl;
+
         if (!dateService->isDateWithinRecurringTimePeriod({message.sendDate, startDate, message.repeatBy, timeWindow}))
         {
+            std::cout << message.sendDate << " should not be send" << std::endl;
+
             continue;
         }
+
+        std::cout << message.sendDate << " should be send" << std::endl;
 
         EmailSender emailSender{message.user.emailAddress, message.displayName, message.user.emailPassword};
 
         EmailReceiver emailReceiver{message.recipient.emailAddress, message.recipient.name};
 
-        SendEmailPayload emailPayload{emailSender, emailReceiver, message.title, message.text,
-                                      hostResolver->resolve(message.user.emailAddress)};
+        const auto smtpEndpoint = hostResolver->resolve(message.user.emailAddress);
+
+        SendEmailPayload emailPayload{emailSender, emailReceiver, message.title, message.text, smtpEndpoint};
+
+        std::cout << "payload: " << emailPayload << std::endl;
 
         try
         {
@@ -77,7 +86,7 @@ void SendMessagesCommandImpl::sendMessagesBatch(std::span<const Message> message
         catch (const std::runtime_error& error)
         {
             std::cerr << error.what() << std::endl;
-            
+
             continue;
         }
 
