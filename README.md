@@ -26,4 +26,4 @@ export OUTLOOK_SMTP_HOST=smtp-mail.outlook.com
 
 export OUTLOOK_SMTP_PORT=587
 
-export TIME_WINDOW=2
+export TIME_WINDOW=5
