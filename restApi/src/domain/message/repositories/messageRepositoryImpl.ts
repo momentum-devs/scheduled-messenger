@@ -5,6 +5,7 @@ import { CreateOnePayload, CreateOnePayloadInput } from './payloads/createOnePay
 import { FindManyPayload, FindManyPayloadInput } from './payloads/findManyPayload.js';
 import { MessageRepository } from './messageRepository.js';
 import { Message } from '../message.js';
+import { DeleteOnePayload } from './payloads/deleteOnePayload.js';
 
 export class MessageRepositoryImpl implements MessageRepository {
   private readonly messagesTableName = 'messages';
@@ -33,5 +34,11 @@ export class MessageRepositoryImpl implements MessageRepository {
     const messageEntities = await query;
 
     return messageEntities.map((messageEntity) => this.messageMapper.map(messageEntity));
+  }
+
+  public async deleteOne(input: DeleteOnePayload): Promise<void> {
+    const { id } = DeleteOnePayload.create(input);
+
+    await this.queryBuilder<MessageEntity>(this.messagesTableName).where('id', '=', id).del();
   }
 }
