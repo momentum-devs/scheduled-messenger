@@ -77,7 +77,7 @@ void MessageRepositoryImpl::deleteOne(const std::string& id)
 {
     const auto connection = databaseConnector->getConnection();
 
-    const auto deleteMessageQuery = fmt::format("DELETE FROM messages WHERE id = {}", id);
+    const auto deleteMessageQuery = fmt::format("DELETE FROM messages WHERE id='{}'", id);
 
     connection->execute(deleteMessageQuery);
 }
