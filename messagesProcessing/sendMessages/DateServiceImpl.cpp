@@ -13,11 +13,8 @@ bool DateServiceImpl::isDateWithinRecurringTimePeriod(const IsDateWithinRecurrin
 
     if (!isTimeFromTimeWindow({hour, minute}, {startHour, startMinute}, payload.timeWindow))
     {
-        std::cout << "date:" << payload.date << " not in time window" << std::endl;
         return false;
     }
-
-    std::cout << "date:" << payload.date << " in time window" << std::endl;
 
     if (hour == 23 && minute + payload.timeWindow > 60)
     {
@@ -84,12 +81,11 @@ DateTime DateServiceImpl::convertDateStringToDateTime(std::string date) const
 
 bool DateServiceImpl::isTimeFromTimeWindow(const Time& time, const Time& startTime, int timeWindow) const
 {
-    std::cout <<
     auto [hour, minute] = time;
 
     auto [startHour, startMinute] = startTime;
 
-    if (startHour == hour and minute > startMinute - timeWindow and startMinute <= minute)
+    if (startHour == hour and minute + timeWindow > startMinute and startMinute >= minute)
     {
         return true;
     }
